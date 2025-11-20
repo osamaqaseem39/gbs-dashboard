@@ -1,6 +1,6 @@
-# Ecommerce Dashboard
+# Gujrat Book Shop Dashboard
 
-A modern, responsive React dashboard for managing ecommerce operations with a clean and intuitive interface.
+A modern, responsive React dashboard for managing Gujrat Book Shop operations - a stationery and books e-commerce platform with a clean and intuitive interface.
 
 ## Features
 
@@ -116,7 +116,7 @@ Create a `.env.local` file with the following variables:
 
 ```env
 REACT_APP_API_URL=http://localhost:3001/api
-REACT_APP_APP_NAME=Ecommerce Dashboard
+REACT_APP_APP_NAME=Gujrat Book Shop Dashboard
 ```
 
 ## Contributing

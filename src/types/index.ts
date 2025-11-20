@@ -91,39 +91,55 @@ export interface Product {
   isActive: boolean;
   seo: ProductSEO;
   
-  // Pakistani Clothing Specific Fields
-  fabric: string;
-  collectionName: string;
-  occasion: string;
-  season: string;
-  careInstructions: string;
-  modelMeasurements: {
-    height: string;
-    bust: string;
-    waist: string;
-    hips: string;
-    sizeWearing: string;
-  };
-  designer: string;
-  handwork: string[];
+  // Stationery & Book Specific Fields
+  material: string; // Paper type, binding material, etc.
+  collectionName: string; // Book series, collection name
+  useCase: string; // Educational, professional, personal, etc.
+  subject: string; // Subject area for books
+  careInstructions: string; // Handling and storage instructions
+  author: string; // Author name for books
+  publisher: string; // Publisher name
+  isbn?: string; // ISBN for books
+  edition?: string; // Edition number
+  pageCount?: number; // Number of pages
+  language: string; // Language of the book
+  bindingType: string; // Hardcover, paperback, spiral, etc.
+  specialFeatures: string[]; // Special features like ruled lines, perforated pages, etc.
   colorFamily: string;
-  pattern: string;
-  sleeveLength: string;
-  neckline: string;
-  length: string;
-  fit: string;
-  ageGroup: string;
-  bodyType: string[];
+  pattern: string; // Cover pattern, design pattern
+  format: string; // A4, A5, Letter size, etc.
+  ageGroup: string; // Age group for educational materials
+  gradeLevel?: string; // Grade level for educational books
   isLimitedEdition: boolean;
   isCustomMade: boolean;
   customDeliveryDays?: number;
   sizeChart: string;
   sizeChartImageUrl?: string;
-  availableSizes: string[];
+  availableSizes: string[]; // Different sizes available (A4, A5, etc. for stationery, or S/M/L/XL for uniforms)
   sizeInventory?: Array<{
     size: string;
     quantity: number;
   }>;
+  
+  // Uniform Specific Fields
+  isUniform?: boolean; // Whether this product is a uniform
+  uniformType?: string; // School uniform, sports uniform, etc.
+  gender?: string; // Boys, Girls, Unisex
+  uniformSize?: string; // Size for uniforms (S, M, L, XL, etc.)
+  
+  // Book Set Specific Fields
+  isBookSet?: boolean; // Whether this is a book set
+  bookSetType?: 'class' | 'school' | 'subject' | 'custom'; // Type of book set
+  classLevel?: string; // Class/Grade level (e.g., "Class 1", "Grade 5")
+  schoolName?: string; // School name for school-specific sets
+  board?: string; // Educational board (e.g., "O-Levels Cambridge", "Matric Punjab Board", "A-Levels", "Federal Board")
+  setItems?: Array<{ // Books included in the set
+    bookId?: string; // Reference to another product (book)
+    bookName: string; // Name of the book
+    subject?: string; // Subject of the book
+    quantity: number; // Quantity of this book in the set
+  }>;
+  totalBooksInSet?: number; // Total number of books in the set
   createdAt: string;
   updatedAt: string;
   
@@ -534,26 +550,34 @@ export interface ProductFilters {
   sortBy?: 'name' | 'price' | 'createdAt' | 'updatedAt' | 'rating';
   sortOrder?: 'asc' | 'desc';
   sizes?: string[];
-  fabrics?: string[];
-  occasions?: string[];
+  materials?: string[]; // Material types (replaces fabrics)
+  useCases?: string[]; // Use cases (replaces occasions)
   colorFamilies?: string[];
   tags?: string[];
   attributes?: string[];
   collections?: string[];
-  designers?: string[];
+  publishers?: string[]; // Publishers (replaces designers)
   seasons?: string[];
   ageGroups?: string[];
-  bodyTypes?: string[];
+  gradeLevels?: string[]; // Grade/Class levels
   isNew?: boolean;
   isSale?: boolean;
   isLimitedEdition?: boolean;
   isCustomMade?: boolean;
-  handwork?: string[];
+  specialFeatures?: string[];
   patterns?: string[];
-  sleeveLengths?: string[];
-  necklines?: string[];
-  lengths?: string[];
-  fits?: string[];
+  formats?: string[]; // Product formats
+  // Uniform filters
+  isUniform?: boolean;
+  uniformTypes?: string[];
+  genders?: string[];
+  // Book Set filters
+  isBookSet?: boolean;
+  bookSetTypes?: string[];
+  classLevels?: string[];
+  schools?: string[]; // School names
+  boards?: string[]; // Educational boards (O-Levels Cambridge, Matric Punjab Board, etc.)
+  subjects?: string[]; // Subject filters
   priceRange?: {
     min: number;
     max: number;

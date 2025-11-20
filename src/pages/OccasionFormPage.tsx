@@ -250,7 +250,7 @@ const OccasionFormPage: React.FC = () => {
                   <p className="mt-1 text-sm text-red-600">{errors.description}</p>
                 )}
                 <p className="mt-1 text-sm text-gray-500">
-                  Help customers understand when and how to wear clothing for this occasion
+                  Help customers understand when and how to use products for this occasion
                 </p>
               </div>
 

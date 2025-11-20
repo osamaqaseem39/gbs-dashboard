@@ -46,13 +46,25 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
   };
 
   const filterOptions = {
-    fabrics: ['Cotton', 'Silk', 'Lawn', 'Chiffon', 'Linen', 'Georgette', 'Organza', 'Velvet'],
-    occasions: ['Formal', 'Casual', 'Wedding', 'Party', 'Office', 'Traditional', 'Festive'],
+    materials: ['Cotton', 'Polyester', 'Paper', 'Cardboard', 'Plastic', 'Leather', 'Fabric'],
+    useCases: ['Educational', 'Professional', 'Personal', 'Art', 'Office', 'School'],
     seasons: ['Summer', 'Winter', 'Spring', 'Fall', 'All Season'],
     colorFamilies: ['Pastels', 'Brights', 'Neutrals', 'Dark', 'Earthy', 'Jewel Tones'],
-    patterns: ['Solid', 'Floral', 'Geometric', 'Abstract', 'Striped', 'Polka Dot', 'Embroidered'],
-    sleeveLengths: ['Sleeveless', 'Short', '3/4', 'Long', 'Full'],
-    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', '6', '8', '10', '12', '14', '16', '18', '20'],
+    patterns: ['Solid', 'Floral', 'Geometric', 'Abstract', 'Striped', 'Polka Dot', 'Plain'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'A4', 'A5', 'Letter', 'Legal'],
+    boards: [
+      'O-Levels Cambridge',
+      'A-Levels Cambridge',
+      'Matric Punjab Board',
+      'Matric Sindh Board',
+      'Matric KPK Board',
+      'Matric Balochistan Board',
+      'Federal Board',
+      'IB (International Baccalaureate)',
+    ],
+    classLevels: ['Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10', 'Grade 11', 'Grade 12'],
+    uniformTypes: ['School Uniform', 'Sports Uniform', 'House Uniform', 'Formal Uniform'],
+    genders: ['Boys', 'Girls', 'Unisex'],
   };
 
   return (
@@ -71,37 +83,37 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column */}
           <div className="space-y-6">
-            {/* Fabric */}
+            {/* Material */}
             <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-3">Fabric</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-3">Material</h3>
               <div className="grid grid-cols-2 gap-2">
-                {filterOptions.fabrics.map((fabric) => (
-                  <label key={fabric} className="flex items-center">
+                {filterOptions.materials.map((material) => (
+                  <label key={material} className="flex items-center">
                     <input
                       type="checkbox"
-                      checked={((localFilters as any).fabrics || []).includes(fabric)}
-                      onChange={(e) => handleArrayFilterChange('fabrics', fabric, e.target.checked)}
+                      checked={((localFilters as any).materials || []).includes(material)}
+                      onChange={(e) => handleArrayFilterChange('materials', material, e.target.checked)}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
-                    <span className="ml-2 text-sm text-gray-700">{fabric}</span>
+                    <span className="ml-2 text-sm text-gray-700">{material}</span>
                   </label>
                 ))}
               </div>
             </div>
 
-            {/* Occasion */}
+            {/* Use Case */}
             <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-3">Occasion</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-3">Use Case</h3>
               <div className="grid grid-cols-2 gap-2">
-                {filterOptions.occasions.map((occasion) => (
-                  <label key={occasion} className="flex items-center">
+                {filterOptions.useCases.map((useCase) => (
+                  <label key={useCase} className="flex items-center">
                     <input
                       type="checkbox"
-                      checked={((localFilters as any).occasions || []).includes(occasion)}
-                      onChange={(e) => handleArrayFilterChange('occasions', occasion, e.target.checked)}
+                      checked={((localFilters as any).useCases || []).includes(useCase)}
+                      onChange={(e) => handleArrayFilterChange('useCases', useCase, e.target.checked)}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
-                    <span className="ml-2 text-sm text-gray-700">{occasion}</span>
+                    <span className="ml-2 text-sm text-gray-700">{useCase}</span>
                   </label>
                 ))}
               </div>
@@ -164,19 +176,73 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
           {/* Right Column */}
           <div className="space-y-6">
-            {/* Sleeve Length */}
+            {/* Educational Board */}
             <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-3">Sleeve Length</h3>
-              <div className="grid grid-cols-2 gap-2">
-                {filterOptions.sleeveLengths.map((length) => (
-                  <label key={length} className="flex items-center">
+              <h3 className="text-lg font-medium text-gray-900 mb-3">Educational Board</h3>
+              <div className="grid grid-cols-1 gap-2">
+                {filterOptions.boards.map((board) => (
+                  <label key={board} className="flex items-center">
                     <input
                       type="checkbox"
-                      checked={((localFilters as any).sleeveLengths || []).includes(length)}
-                      onChange={(e) => handleArrayFilterChange('sleeveLengths', length, e.target.checked)}
+                      checked={((localFilters as any).boards || []).includes(board)}
+                      onChange={(e) => handleArrayFilterChange('boards', board, e.target.checked)}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
-                    <span className="ml-2 text-sm text-gray-700">{length}</span>
+                    <span className="ml-2 text-sm text-gray-700">{board}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Class Level */}
+            <div>
+              <h3 className="text-lg font-medium text-gray-900 mb-3">Class/Grade Level</h3>
+              <div className="grid grid-cols-3 gap-2">
+                {filterOptions.classLevels.map((level) => (
+                  <label key={level} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={((localFilters as any).gradeLevels || []).includes(level)}
+                      onChange={(e) => handleArrayFilterChange('gradeLevels', level, e.target.checked)}
+                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">{level}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Uniform Type */}
+            <div>
+              <h3 className="text-lg font-medium text-gray-900 mb-3">Uniform Type</h3>
+              <div className="grid grid-cols-2 gap-2">
+                {filterOptions.uniformTypes.map((type) => (
+                  <label key={type} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={((localFilters as any).uniformTypes || []).includes(type)}
+                      onChange={(e) => handleArrayFilterChange('uniformTypes', type, e.target.checked)}
+                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">{type}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Gender (for uniforms) */}
+            <div>
+              <h3 className="text-lg font-medium text-gray-900 mb-3">Gender</h3>
+              <div className="grid grid-cols-3 gap-2">
+                {filterOptions.genders.map((gender) => (
+                  <label key={gender} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={((localFilters as any).genders || []).includes(gender)}
+                      onChange={(e) => handleArrayFilterChange('genders', gender, e.target.checked)}
+                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">{gender}</span>
                   </label>
                 ))}
               </div>
@@ -204,6 +270,24 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
             <div>
               <h3 className="text-lg font-medium text-gray-900 mb-3">Special Features</h3>
               <div className="space-y-2">
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={localFilters.isUniform || false}
+                    onChange={(e) => handleFilterChange('isUniform', e.target.checked || undefined)}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">Uniforms</span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={localFilters.isBookSet || false}
+                    onChange={(e) => handleFilterChange('isBookSet', e.target.checked || undefined)}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">Book Sets</span>
+                </label>
                 <label className="flex items-center">
                   <input
                     type="checkbox"

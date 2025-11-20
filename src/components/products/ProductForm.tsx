@@ -57,35 +57,49 @@ interface ProductFormData {
     imageUrl?: string;
   }>;
   attributes: string[];
-  // Pakistani Clothing Specific Fields
-  fabric?: string;
+  // Stationery & Book Specific Fields
+  material?: string;
   collectionName?: string;
-  occasion?: string;
-  season?: string;
+  useCase?: string;
+  subject?: string;
   careInstructions?: string;
-  modelMeasurements?: {
-    height: string;
-    bust: string;
-    waist: string;
-    hips: string;
-    sizeWearing: string;
-  };
-  designer?: string;
-  handwork?: string[];
+  author?: string;
+  publisher?: string;
+  isbn?: string;
+  edition?: string;
+  pageCount?: number;
+  language?: string;
+  bindingType?: string;
+  specialFeatures?: string[];
   colorFamily?: string;
   pattern?: string;
-  sleeveLength?: string;
-  neckline?: string;
-  length?: string;
-  fit?: string;
+  format?: string;
   ageGroup?: string;
-  bodyType?: string[];
+  gradeLevel?: string;
   isLimitedEdition?: boolean;
   isCustomMade?: boolean;
   customDeliveryDays?: number;
   sizeChart?: string;
   sizeChartImageUrl?: string;
   availableSizes?: string[];
+  // Uniform Specific Fields
+  isUniform?: boolean;
+  uniformType?: string;
+  gender?: string;
+  uniformSize?: string;
+  // Book Set Specific Fields
+  isBookSet?: boolean;
+  bookSetType?: 'class' | 'school' | 'subject' | 'custom';
+  classLevel?: string;
+  schoolName?: string;
+  board?: string;
+  setItems?: Array<{
+    bookId?: string;
+    bookName: string;
+    subject?: string;
+    quantity: number;
+  }>;
+  totalBooksInSet?: number;
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({
@@ -180,46 +194,44 @@ const ProductForm: React.FC<ProductFormProps> = ({
     features: product?.features || [],
     colors: product?.colors || [],
     attributes: product?.attributes || [],
-    // Pakistani Clothing Specific Fields
-    fabric: product?.fabric || '',
+    // Stationery & Book Specific Fields
+    material: product?.material || '',
     collectionName: product?.collectionName || '',
-    occasion: product?.occasion || '',
-    season: product?.season || '',
+    useCase: product?.useCase || '',
+    subject: product?.subject || '',
     careInstructions: product?.careInstructions || '',
-    modelMeasurements: product?.modelMeasurements ? (() => {
-      // Clean modelMeasurements: remove _id if present
-      const measurements = product.modelMeasurements as any;
-      const { _id, ...rest } = measurements;
-      return {
-        height: measurements.height || '',
-        bust: measurements.bust || '',
-        waist: measurements.waist || '',
-        hips: measurements.hips || '',
-        sizeWearing: measurements.sizeWearing || '',
-      };
-    })() : {
-      height: '',
-      bust: '',
-      waist: '',
-      hips: '',
-      sizeWearing: '',
-    },
-    designer: product?.designer || '',
-    handwork: product?.handwork || [],
+    author: product?.author || '',
+    publisher: product?.publisher || '',
+    isbn: product?.isbn || '',
+    edition: product?.edition || '',
+    pageCount: product?.pageCount || 0,
+    language: product?.language || '',
+    bindingType: product?.bindingType || '',
+    specialFeatures: product?.specialFeatures || [],
     colorFamily: product?.colorFamily || '',
     pattern: product?.pattern || '',
-    sleeveLength: product?.sleeveLength || '',
-    neckline: product?.neckline || '',
-    length: product?.length || '',
-    fit: product?.fit || '',
+    format: product?.format || '',
     ageGroup: product?.ageGroup || '',
-    bodyType: product?.bodyType || [],
+    gradeLevel: product?.gradeLevel || '',
     isLimitedEdition: product?.isLimitedEdition || false,
     isCustomMade: product?.isCustomMade || false,
     customDeliveryDays: product?.customDeliveryDays || 0,
     sizeChart: product?.sizeChart || '',
     sizeChartImageUrl: product?.sizeChartImageUrl || '',
     availableSizes: product?.availableSizes || [],
+    // Uniform Specific Fields
+    isUniform: product?.isUniform || false,
+    uniformType: product?.uniformType || '',
+    gender: product?.gender || '',
+    uniformSize: product?.uniformSize || '',
+    // Book Set Specific Fields
+    isBookSet: product?.isBookSet || false,
+    bookSetType: product?.bookSetType || 'class',
+    classLevel: product?.classLevel || '',
+    schoolName: product?.schoolName || '',
+    board: product?.board || '',
+    setItems: product?.setItems || [],
+    totalBooksInSet: product?.totalBooksInSet || 0,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -461,29 +473,38 @@ const ProductForm: React.FC<ProductFormProps> = ({
       features: formData.features && formData.features.length > 0 ? formData.features : undefined,
       colors: formData.colors && formData.colors.length > 0 ? formData.colors : undefined,
       attributes: formData.attributes && formData.attributes.length > 0 ? formData.attributes : undefined,
-      // Pakistani Clothing Specific Fields
-      fabric: formData.fabric || undefined,
+      // Stationery & Book Specific Fields
+      material: formData.material || undefined,
       collectionName: formData.collectionName || undefined,
-      occasion: formData.occasion || undefined,
-      season: formData.season || undefined,
+      useCase: formData.useCase || undefined,
+      subject: formData.subject || undefined,
       careInstructions: formData.careInstructions || undefined,
-      modelMeasurements: formData.modelMeasurements && formData.modelMeasurements.height ? {
-        height: formData.modelMeasurements.height,
-        bust: formData.modelMeasurements.bust || '',
-        waist: formData.modelMeasurements.waist || '',
-        hips: formData.modelMeasurements.hips || '',
-        sizeWearing: formData.modelMeasurements.sizeWearing || '',
-      } : undefined,
-      designer: formData.designer || undefined,
-      handwork: formData.handwork && formData.handwork.length > 0 ? formData.handwork : undefined,
+      author: formData.author || undefined,
+      publisher: formData.publisher || undefined,
+      isbn: formData.isbn || undefined,
+      edition: formData.edition || undefined,
+      pageCount: formData.pageCount || undefined,
+      language: formData.language || undefined,
+      bindingType: formData.bindingType || undefined,
+      specialFeatures: formData.specialFeatures && formData.specialFeatures.length > 0 ? formData.specialFeatures : undefined,
       colorFamily: formData.colorFamily || undefined,
       pattern: formData.pattern || undefined,
-      sleeveLength: formData.sleeveLength || undefined,
-      neckline: formData.neckline || undefined,
-      length: formData.length || undefined,
-      fit: formData.fit || undefined,
+      format: formData.format || undefined,
       ageGroup: formData.ageGroup || undefined,
-      bodyType: formData.bodyType && formData.bodyType.length > 0 ? formData.bodyType : undefined,
+      gradeLevel: formData.gradeLevel || undefined,
+      // Uniform Specific Fields
+      isUniform: formData.isUniform || undefined,
+      uniformType: formData.uniformType || undefined,
+      gender: formData.gender || undefined,
+      uniformSize: formData.uniformSize || undefined,
+      // Book Set Specific Fields
+      isBookSet: formData.isBookSet || undefined,
+      bookSetType: formData.bookSetType || undefined,
+      classLevel: formData.classLevel || undefined,
+      schoolName: formData.schoolName || undefined,
+      board: formData.board || undefined,
+      setItems: formData.setItems && formData.setItems.length > 0 ? formData.setItems : undefined,
+      totalBooksInSet: formData.totalBooksInSet || undefined,
       isLimitedEdition: formData.isLimitedEdition || undefined,
       isCustomMade: formData.isCustomMade || undefined,
       customDeliveryDays: formData.customDeliveryDays && formData.customDeliveryDays > 0 ? formData.customDeliveryDays : undefined,
@@ -614,7 +635,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
             >
-              Clothing Properties
+              Product Properties
             </button>
             <button
               type="button"
@@ -1120,22 +1141,22 @@ const ProductForm: React.FC<ProductFormProps> = ({
             </div>
           )}
 
-          {/* Clothing Properties Tab */}
+          {/* Product Properties Tab */}
           {activeTab === 'properties' && (
             <div className="space-y-6">
-              {/* Row 1: Fabric, Collection, Occasion, Season */}
+              {/* Row 1: Material, Collection, Use Case, Subject */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-medium text-gray-700">Fabric Type</label>
-                  <button type="button" className="text-xs text-blue-600 hover:underline" onClick={() => setQuickAdd({ type: 'Fabric' })}>+ Add new fabric type</button>
+                  <label className="block text-sm font-medium text-gray-700">Material/Paper Type</label>
+                  <button type="button" className="text-xs text-blue-600 hover:underline" onClick={() => setQuickAdd({ type: 'Material' })}>+ Add new material</button>
                 </div>
                 <select
-                  value={formData.fabric}
-                  onChange={(e) => handleChange('fabric', e.target.value)}
+                  value={formData.material}
+                  onChange={(e) => handleChange('material', e.target.value)}
                   className="input-field"
                 >
-                  <option value="">Select Fabric</option>
+                  <option value="">Select Material</option>
                   {fabricOptions.map(opt => (
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
@@ -1144,28 +1165,28 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Collection
+                  Collection/Series
                 </label>
                 <input
                   type="text"
                   value={formData.collectionName}
                   onChange={(e) => handleChange('collectionName', e.target.value)}
                   className="input-field"
-                  placeholder="e.g., Summer 2024, Eid Collection"
+                  placeholder="e.g., Book Series Name"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-medium text-gray-700">Occasion</label>
-                  <button type="button" className="text-xs text-blue-600 hover:underline" onClick={() => setQuickAdd({ type: 'Occasion' })}>+ Add new occasion</button>
+                  <label className="block text-sm font-medium text-gray-700">Use Case</label>
+                  <button type="button" className="text-xs text-blue-600 hover:underline" onClick={() => setQuickAdd({ type: 'Use Case' })}>+ Add new use case</button>
                 </div>
                 <select
-                  value={formData.occasion}
-                  onChange={(e) => handleChange('occasion', e.target.value)}
+                  value={formData.useCase}
+                  onChange={(e) => handleChange('useCase', e.target.value)}
                   className="input-field"
                 >
-                  <option value="">Select Occasion</option>
+                  <option value="">Select Use Case</option>
                   {occasionOptions.map(opt => (
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
@@ -1173,36 +1194,76 @@ const ProductForm: React.FC<ProductFormProps> = ({
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-medium text-gray-700">Season</label>
-                  <button type="button" className="text-xs text-blue-600 hover:underline" onClick={() => setQuickAdd({ type: 'Season' })}>+ Add new season</button>
-                </div>
-                <select
-                  value={formData.season}
-                  onChange={(e) => handleChange('season', e.target.value)}
-                  className="input-field"
-                >
-                  <option value="">Select Season</option>
-                  {seasonOptions.map(opt => (
-                    <option key={opt} value={opt}>{opt}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Row 2: Designer, Color Family, Pattern, Sleeve Length */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Designer
+                  Subject
                 </label>
                 <input
                   type="text"
-                  value={formData.designer}
-                  onChange={(e) => handleChange('designer', e.target.value)}
+                  value={formData.subject}
+                  onChange={(e) => handleChange('subject', e.target.value)}
                   className="input-field"
-                  placeholder="Designer/Design House"
+                  placeholder="e.g., Mathematics, Science"
                 />
+              </div>
+            </div>
+
+            {/* Row 2: Author, Publisher, Language, Binding Type */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Author
+                </label>
+                <input
+                  type="text"
+                  value={formData.author}
+                  onChange={(e) => handleChange('author', e.target.value)}
+                  className="input-field"
+                  placeholder="Author Name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Publisher
+                </label>
+                <input
+                  type="text"
+                  value={formData.publisher}
+                  onChange={(e) => handleChange('publisher', e.target.value)}
+                  className="input-field"
+                  placeholder="Publisher Name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Language
+                </label>
+                <input
+                  type="text"
+                  value={formData.language}
+                  onChange={(e) => handleChange('language', e.target.value)}
+                  className="input-field"
+                  placeholder="e.g., English, Urdu"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Binding Type
+                </label>
+                <select
+                  value={formData.bindingType}
+                  onChange={(e) => handleChange('bindingType', e.target.value)}
+                  className="input-field"
+                >
+                  <option value="">Select Binding</option>
+                  <option value="Hardcover">Hardcover</option>
+                  <option value="Paperback">Paperback</option>
+                  <option value="Spiral">Spiral</option>
+                  <option value="Wire-O">Wire-O</option>
+                  <option value="Perfect Bound">Perfect Bound</option>
+                </select>
               </div>
 
               <div>
@@ -1240,21 +1301,308 @@ const ProductForm: React.FC<ProductFormProps> = ({
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-medium text-gray-700">Sleeve Length</label>
-                  <button type="button" className="text-xs text-blue-600 hover:underline" onClick={() => setQuickAdd({ type: 'Sleeve Length' })}>+ Add new sleeve length</button>
-                </div>
-                <select
-                  value={formData.sleeveLength}
-                  onChange={(e) => handleChange('sleeveLength', e.target.value)}
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Format/Size
+                </label>
+                <input
+                  type="text"
+                  value={formData.format}
+                  onChange={(e) => handleChange('format', e.target.value)}
                   className="input-field"
-                >
-                  <option value="">Select Sleeve Length</option>
-                  {sleeveLengthOptions.map(opt => (
-                    <option key={opt} value={opt}>{opt}</option>
-                  ))}
-                </select>
+                  placeholder="e.g., A4, A5, Letter"
+                />
               </div>
+            </div>
+
+            {/* Row 3: Grade Level, Age Group, ISBN, Edition */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Grade/Class Level
+                </label>
+                <input
+                  type="text"
+                  value={formData.gradeLevel}
+                  onChange={(e) => handleChange('gradeLevel', e.target.value)}
+                  className="input-field"
+                  placeholder="e.g., Class 1, Grade 5"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Age Group
+                </label>
+                <input
+                  type="text"
+                  value={formData.ageGroup}
+                  onChange={(e) => handleChange('ageGroup', e.target.value)}
+                  className="input-field"
+                  placeholder="e.g., 5-7 years"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  ISBN
+                </label>
+                <input
+                  type="text"
+                  value={formData.isbn}
+                  onChange={(e) => handleChange('isbn', e.target.value)}
+                  className="input-field"
+                  placeholder="ISBN number"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Edition
+                </label>
+                <input
+                  type="text"
+                  value={formData.edition}
+                  onChange={(e) => handleChange('edition', e.target.value)}
+                  className="input-field"
+                  placeholder="e.g., 1st Edition, 2024"
+                />
+              </div>
+            </div>
+
+            {/* Uniform Section */}
+            <div className="border-t pt-6 mt-6">
+              <div className="flex items-center mb-4">
+                <input
+                  type="checkbox"
+                  checked={formData.isUniform || false}
+                  onChange={(e) => handleChange('isUniform', e.target.checked)}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <label className="ml-2 text-lg font-medium text-gray-900">
+                  This is a Uniform
+                </label>
+              </div>
+
+              {formData.isUniform && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Uniform Type
+                    </label>
+                    <select
+                      value={formData.uniformType || ''}
+                      onChange={(e) => handleChange('uniformType', e.target.value)}
+                      className="input-field"
+                    >
+                      <option value="">Select Type</option>
+                      <option value="School Uniform">School Uniform</option>
+                      <option value="Sports Uniform">Sports Uniform</option>
+                      <option value="House Uniform">House Uniform</option>
+                      <option value="Formal Uniform">Formal Uniform</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Gender
+                    </label>
+                    <select
+                      value={formData.gender || ''}
+                      onChange={(e) => handleChange('gender', e.target.value)}
+                      className="input-field"
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="Boys">Boys</option>
+                      <option value="Girls">Girls</option>
+                      <option value="Unisex">Unisex</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Size
+                    </label>
+                    <select
+                      value={formData.uniformSize || ''}
+                      onChange={(e) => handleChange('uniformSize', e.target.value)}
+                      className="input-field"
+                    >
+                      <option value="">Select Size</option>
+                      <option value="XS">XS</option>
+                      <option value="S">S</option>
+                      <option value="M">M</option>
+                      <option value="L">L</option>
+                      <option value="XL">XL</option>
+                      <option value="XXL">XXL</option>
+                      <option value="XXXL">XXXL</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Book Set Section */}
+            <div className="border-t pt-6 mt-6">
+              <div className="flex items-center mb-4">
+                <input
+                  type="checkbox"
+                  checked={formData.isBookSet || false}
+                  onChange={(e) => handleChange('isBookSet', e.target.checked)}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <label className="ml-2 text-lg font-medium text-gray-900">
+                  This is a Book Set
+                </label>
+              </div>
+
+              {formData.isBookSet && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Book Set Type
+                      </label>
+                      <select
+                        value={formData.bookSetType || 'class'}
+                        onChange={(e) => handleChange('bookSetType', e.target.value)}
+                        className="input-field"
+                      >
+                        <option value="class">Class-wise</option>
+                        <option value="school">School-wise</option>
+                        <option value="subject">Subject-wise</option>
+                        <option value="custom">Custom</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Class/Grade Level
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.classLevel || ''}
+                        onChange={(e) => handleChange('classLevel', e.target.value)}
+                        className="input-field"
+                        placeholder="e.g., Class 1, Grade 5"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        School Name
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.schoolName || ''}
+                        onChange={(e) => handleChange('schoolName', e.target.value)}
+                        className="input-field"
+                        placeholder="School name (if school-specific)"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Educational Board
+                      </label>
+                      <select
+                        value={formData.board || ''}
+                        onChange={(e) => handleChange('board', e.target.value)}
+                        className="input-field"
+                      >
+                        <option value="">Select Board</option>
+                        <option value="O-Levels Cambridge">O-Levels Cambridge</option>
+                        <option value="A-Levels Cambridge">A-Levels Cambridge</option>
+                        <option value="Matric Punjab Board">Matric Punjab Board</option>
+                        <option value="Matric Sindh Board">Matric Sindh Board</option>
+                        <option value="Matric KPK Board">Matric KPK Board</option>
+                        <option value="Matric Balochistan Board">Matric Balochistan Board</option>
+                        <option value="Federal Board">Federal Board</option>
+                        <option value="IB">IB (International Baccalaureate)</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Total Books in Set
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.totalBooksInSet || 0}
+                      onChange={(e) => handleChange('totalBooksInSet', parseInt(e.target.value) || 0)}
+                      className="input-field w-32"
+                      min="0"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Books in Set
+                    </label>
+                    <div className="space-y-2">
+                      {(formData.setItems || []).map((item, index) => (
+                        <div key={index} className="flex gap-2 items-center">
+                          <input
+                            type="text"
+                            value={item.bookName}
+                            onChange={(e) => {
+                              const newItems = [...(formData.setItems || [])];
+                              newItems[index] = { ...item, bookName: e.target.value };
+                              handleChange('setItems', newItems);
+                            }}
+                            className="input-field flex-1"
+                            placeholder="Book name"
+                          />
+                          <input
+                            type="text"
+                            value={item.subject || ''}
+                            onChange={(e) => {
+                              const newItems = [...(formData.setItems || [])];
+                              newItems[index] = { ...item, subject: e.target.value };
+                              handleChange('setItems', newItems);
+                            }}
+                            className="input-field w-32"
+                            placeholder="Subject"
+                          />
+                          <input
+                            type="number"
+                            value={item.quantity}
+                            onChange={(e) => {
+                              const newItems = [...(formData.setItems || [])];
+                              newItems[index] = { ...item, quantity: parseInt(e.target.value) || 1 };
+                              handleChange('setItems', newItems);
+                            }}
+                            className="input-field w-20"
+                            min="1"
+                            placeholder="Qty"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const newItems = (formData.setItems || []).filter((_, i) => i !== index);
+                              handleChange('setItems', newItems);
+                            }}
+                            className="px-3 py-2 text-red-600 hover:text-red-700"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newItems = [...(formData.setItems || []), { bookName: '', subject: '', quantity: 1 }];
+                          handleChange('setItems', newItems);
+                        }}
+                        className="btn btn-secondary text-sm"
+                      >
+                        + Add Book to Set
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Quick Add Modal Dispatcher */}

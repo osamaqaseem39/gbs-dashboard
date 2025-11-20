@@ -7,7 +7,7 @@ const PatternFormPage: React.FC = () => {
     <MasterDataFormPage
       service={patternService}
       title="Patterns"
-      description="Help customers understand the pattern type of clothing"
+      description="Help customers understand the pattern type of products"
       singularTitle="Pattern"
       routePrefix="/dashboard/patterns"
       examples={['Solid', 'Floral', 'Geometric', 'Abstract', 'Striped', 'Polka Dot', 'Embroidered']}

@@ -244,13 +244,13 @@ const SeasonFormPage: React.FC = () => {
                   className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.description ? 'border-red-300' : 'border-gray-300'
                   }`}
-                  placeholder="Describe the season, weather conditions, and appropriate clothing styles..."
+                  placeholder="Describe the season and its relevance for products..."
                 />
                 {errors.description && (
                   <p className="mt-1 text-sm text-red-600">{errors.description}</p>
                 )}
                 <p className="mt-1 text-sm text-gray-500">
-                  Help customers understand what clothing is appropriate for this season
+                  Help customers understand what products are relevant for this season
                 </p>
               </div>
 

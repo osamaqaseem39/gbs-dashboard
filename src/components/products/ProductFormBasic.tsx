@@ -234,153 +234,134 @@ const ProductFormBasic: React.FC<ProductFormBasicProps> = ({
         </div>
       </div>
 
-      {/* Pakistani Clothing Specific Fields */}
+      {/* Stationery & Book Specific Fields */}
       <div className="border-t pt-6">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">Clothing Details</h2>
+        <h2 className="text-lg font-medium text-gray-900 mb-4">Product Details</h2>
         
-        {/* Row 1: Fabric, Collection, Occasion, Season */}
+        {/* Row 1: Material, Collection, Use Case, Subject */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Fabric Type
+              Material/Paper Type
             </label>
             <select
-              value={formData.fabric || ''}
-              onChange={(e) => onFieldChange('fabric', e.target.value)}
+              value={formData.material || ''}
+              onChange={(e) => onFieldChange('material', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="">Select Fabric</option>
+              <option value="">Select Material</option>
               {materials.map((m) => (
                 <option key={m._id} value={m.name}>{m.name}</option>
               ))}
             </select>
             <button type="button" onClick={onAddMaterial} className="mt-2 text-sm text-blue-600 hover:text-blue-700">
-              + Add new fabric type
+              + Add new material type
             </button>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Collection
+              Collection/Series
             </label>
             <input
               type="text"
               value={formData.collectionName || ''}
               onChange={(e) => onFieldChange('collectionName', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="e.g., Summer 2024"
+              placeholder="e.g., Book Series Name"
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Occasion
+              Use Case
             </label>
             <select
-              value={formData.occasion || ''}
-              onChange={(e) => onFieldChange('occasion', e.target.value)}
+              value={formData.useCase || ''}
+              onChange={(e) => onFieldChange('useCase', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="">Select Occasion</option>
+              <option value="">Select Use Case</option>
               {occasions.map(o => (
                 <option key={o._id} value={o.name}>{o.name}</option>
               ))}
             </select>
             <button type="button" onClick={onAddOccasion} className="mt-2 text-sm text-blue-600 hover:text-blue-700">
-              + Add new occasion
+              + Add new use case
             </button>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Season
-            </label>
-            <select
-              value={formData.season || ''}
-              onChange={(e) => onFieldChange('season', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="">Select Season</option>
-              {seasons.map(s => (
-                <option key={s._id} value={s.name}>{s.name}</option>
-              ))}
-            </select>
-            <button type="button" onClick={onAddSeason} className="mt-2 text-sm text-blue-600 hover:text-blue-700">
-              + Add new season
-            </button>
-          </div>
-        </div>
-
-        {/* Row 2: Designer, Color Family, Pattern, Sleeve Length */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Designer
+              Subject
             </label>
             <input
               type="text"
-              value={formData.designer || ''}
-              onChange={(e) => onFieldChange('designer', e.target.value)}
+              value={formData.subject || ''}
+              onChange={(e) => onFieldChange('subject', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Designer/Design House"
+              placeholder="e.g., Mathematics, Science"
+            />
+          </div>
+        </div>
+
+        {/* Row 2: Author, Publisher, Language, Binding Type */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Author
+            </label>
+            <input
+              type="text"
+              value={formData.author || ''}
+              onChange={(e) => onFieldChange('author', e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Author Name"
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Color Family
+              Publisher
             </label>
-            <select
-              value={formData.colorFamily || ''}
-              onChange={(e) => onFieldChange('colorFamily', e.target.value)}
+            <input
+              type="text"
+              value={formData.publisher || ''}
+              onChange={(e) => onFieldChange('publisher', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="">Select Color Family</option>
-              {colorFamilies.map(cf => (
-                <option key={cf._id} value={cf.name}>{cf.name}</option>
-              ))}
-            </select>
-            <button type="button" onClick={onAddColorFamily} className="mt-2 text-sm text-blue-600 hover:text-blue-700">
-              + Add new color family
-            </button>
+              placeholder="Publisher Name"
+            />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Pattern
+              Language
             </label>
-            <select
-              value={formData.pattern || ''}
-              onChange={(e) => onFieldChange('pattern', e.target.value)}
+            <input
+              type="text"
+              value={formData.language || ''}
+              onChange={(e) => onFieldChange('language', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="">Select Pattern</option>
-              {patterns.map(p => (
-                <option key={p._id} value={p.name}>{p.name}</option>
-              ))}
-            </select>
-            <button type="button" onClick={onAddPattern} className="mt-2 text-sm text-blue-600 hover:text-blue-700">
-              + Add new pattern
-            </button>
+              placeholder="e.g., English, Urdu"
+            />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Sleeve Length
+              Binding Type
             </label>
             <select
-              value={formData.sleeveLength || ''}
-              onChange={(e) => onFieldChange('sleeveLength', e.target.value)}
+              value={formData.bindingType || ''}
+              onChange={(e) => onFieldChange('bindingType', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="">Select Sleeve Length</option>
-              {sleeveLengths.map(s => (
-                <option key={s._id} value={s.name}>{s.name}</option>
-              ))}
+              <option value="">Select Binding</option>
+              <option value="Hardcover">Hardcover</option>
+              <option value="Paperback">Paperback</option>
+              <option value="Spiral">Spiral</option>
+              <option value="Wire-O">Wire-O</option>
+              <option value="Perfect Bound">Perfect Bound</option>
             </select>
-            <button type="button" onClick={onAddSleeveLength} className="mt-2 text-sm text-blue-600 hover:text-blue-700">
-              + Add new sleeve length
-            </button>
           </div>
         </div>
       </div>

@@ -244,7 +244,7 @@ export const productService = {
       }).filter((v: any) => v !== null && v !== undefined);
     }
 
-    // Pakistani Clothing Specific Fields
+    // Stationery & Book Specific Fields
     copyIfDefined('fabric');
     copyIfDefined('collectionName');
     copyIfDefined('occasion');

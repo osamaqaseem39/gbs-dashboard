@@ -75,9 +75,9 @@ const Sidebar: React.FC = () => {
             <div className="flex h-16 items-center justify-between px-4">
               <div className="flex items-center">
                 <div className="h-8 w-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">S</span>
+                  <span className="text-white font-bold text-sm">GBS</span>
                 </div>
-                <span className="ml-2 text-lg font-semibold text-gray-900">She's Trends</span>
+                <span className="ml-2 text-lg font-semibold text-gray-900">Gujrat Book Shop</span>
               </div>
               <button
                 type="button"
@@ -119,7 +119,7 @@ const Sidebar: React.FC = () => {
               <span className="text-white font-bold text-sm">S</span>
             </div>
             {!isCollapsed && (
-              <span className="ml-2 text-lg font-semibold text-gray-900">She's Trends</span>
+              <span className="ml-2 text-lg font-semibold text-gray-900">Gujrat Book Shop</span>
             )}
           </div>
           <button
@@ -192,7 +192,7 @@ const Sidebar: React.FC = () => {
         {!isCollapsed && (
           <div className="flex-shrink-0 border-t border-gray-200 p-4">
             <div className="text-xs text-gray-500 text-center">
-              © 2024 She's Trends
+              © 2024 Gujrat Book Shop
             </div>
           </div>
         )}
