@@ -1149,7 +1149,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="block text-sm font-medium text-gray-700">Material/Paper Type</label>
-                  <button type="button" className="text-xs text-blue-600 hover:underline" onClick={() => setQuickAdd({ type: 'Material' })}>+ Add new material</button>
+                  <button type="button" className="text-xs text-blue-600 hover:underline" onClick={() => setQuickAdd({ type: 'Fabric' })}>+ Add new material</button>
                 </div>
                 <select
                   value={formData.material}
@@ -1179,7 +1179,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="block text-sm font-medium text-gray-700">Use Case</label>
-                  <button type="button" className="text-xs text-blue-600 hover:underline" onClick={() => setQuickAdd({ type: 'Use Case' })}>+ Add new use case</button>
+                  <button type="button" className="text-xs text-blue-600 hover:underline" onClick={() => setQuickAdd({ type: 'Occasion' })}>+ Add new use case</button>
                 </div>
                 <select
                   value={formData.useCase}
@@ -1636,11 +1636,11 @@ const ProductForm: React.FC<ProductFormProps> = ({
                       break;
                     case 'Fabric':
                       setFabricOptions(prev => prev.includes(name) ? prev : [...prev, name]);
-                      handleChange('fabric', name);
+                      handleChange('material', name);
                       break;
                     case 'Occasion':
                       setOccasionOptions(prev => prev.includes(name) ? prev : [...prev, name]);
-                      handleChange('occasion', name);
+                      handleChange('useCase', name);
                       break;
                     case 'Season':
                       setSeasonOptions(prev => prev.includes(name) ? prev : [...prev, name]);
