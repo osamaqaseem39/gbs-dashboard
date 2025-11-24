@@ -100,9 +100,6 @@ interface ProductFormData {
     quantity: number;
   }>;
   totalBooksInSet?: number;
-  modelMeasurements?: {
-    height?: string;
-  };
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({
@@ -235,7 +232,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
     board: product?.board || '',
     setItems: product?.setItems || [],
     totalBooksInSet: product?.totalBooksInSet || 0,
-    modelMeasurements: product?.modelMeasurements || { height: '' },
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -1661,25 +1657,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
           {/* Measurements Tab */}
           {activeTab === 'measurements' && (
             <div className="space-y-6">
-              {/* Model Measurements */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Model Height (for size reference)
-                </label>
-                <div className="w-full md:w-1/3">
-                  <input
-                    type="text"
-                    value={formData.modelMeasurements?.height || ''}
-                    onChange={(e) => handleChange('modelMeasurements', {
-                      ...formData.modelMeasurements,
-                      height: e.target.value,
-                    })}
-                    className="input-field"
-                    placeholder="e.g., 5'6&quot;"
-                  />
-                </div>
-              </div>
-
               {/* Available Sizes */}
               <div className="mb-6">
                 <div className="flex justify-between items-center mb-2">
