@@ -259,10 +259,10 @@ const Products: React.FC = () => {
                     Category
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Fabric
+                    Material
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Occasion
+                    Use Case
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Price
@@ -327,10 +327,10 @@ const Products: React.FC = () => {
                       })()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {product.fabric || '-'}
+                      {product.material || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {product.occasion || '-'}
+                      {product.useCase || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {formatCurrency(product.price || 0)}
