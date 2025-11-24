@@ -100,6 +100,9 @@ interface ProductFormData {
     quantity: number;
   }>;
   totalBooksInSet?: number;
+  modelMeasurements?: {
+    height?: string;
+  };
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({
@@ -232,6 +235,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
     board: product?.board || '',
     setItems: product?.setItems || [],
     totalBooksInSet: product?.totalBooksInSet || 0,
+    modelMeasurements: product?.modelMeasurements || { height: '' },
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
