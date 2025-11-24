@@ -245,25 +245,13 @@ export const productService = {
     }
 
     // Stationery & Book Specific Fields
-    copyIfDefined('fabric');
+    copyIfDefined('material');
     copyIfDefined('collectionName');
-    copyIfDefined('occasion');
-    copyIfDefined('season');
+    copyIfDefined('useCase');
     copyIfDefined('careInstructions');
-    copyIfDefined('designer');
-    if (rest.handwork && Array.isArray(rest.handwork) && rest.handwork.length > 0) {
-      whitelisted.handwork = rest.handwork;
-    }
     copyIfDefined('colorFamily');
     copyIfDefined('pattern');
-    copyIfDefined('sleeveLength');
-    copyIfDefined('neckline');
-    copyIfDefined('length');
-    copyIfDefined('fit');
     copyIfDefined('ageGroup');
-    if (rest.bodyType && Array.isArray(rest.bodyType) && rest.bodyType.length > 0) {
-      whitelisted.bodyType = rest.bodyType;
-    }
     copyIfDefined('isLimitedEdition');
     copyIfDefined('isCustomMade');
     copyIfDefined('customDeliveryDays');

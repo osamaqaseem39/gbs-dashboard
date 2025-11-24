@@ -121,21 +121,13 @@ const ProductFormPage: React.FC<ProductFormPageProps> = ({
     images: product?.images || [],
     features: product?.features || [],
     colors: product?.colors || [],
-    fabric: product?.fabric || '',
+    material: product?.material || '',
     collectionName: product?.collectionName || '',
-    occasion: product?.occasion || '',
-    season: product?.season || '',
+    useCase: product?.useCase || '',
     careInstructions: product?.careInstructions || '',
-    designer: product?.designer || '',
-    handwork: product?.handwork || [],
     colorFamily: product?.colorFamily || '',
     pattern: product?.pattern || '',
-    sleeveLength: product?.sleeveLength || '',
-    neckline: product?.neckline || '',
-    length: product?.length || '',
-    fit: product?.fit || '',
     ageGroup: product?.ageGroup || '',
-    bodyType: product?.bodyType || [],
     isLimitedEdition: product?.isLimitedEdition || false,
     isCustomMade: product?.isCustomMade || false,
     customDeliveryDays: product?.customDeliveryDays || 0,
@@ -217,21 +209,13 @@ const ProductFormPage: React.FC<ProductFormPageProps> = ({
         images: product.images || [],
         features: product.features || [],
         colors: product.colors || [],
-        fabric: product.fabric || '',
+        material: product.material || '',
         collectionName: product.collectionName || '',
-        occasion: product.occasion || '',
-        season: product.season || '',
+        useCase: product.useCase || '',
         careInstructions: product.careInstructions || '',
-        designer: product.designer || '',
-        handwork: product.handwork || [],
         colorFamily: product.colorFamily || '',
         pattern: product.pattern || '',
-        sleeveLength: product.sleeveLength || '',
-        neckline: product.neckline || '',
-        length: product.length || '',
-        fit: product.fit || '',
         ageGroup: product.ageGroup || '',
-        bodyType: product.bodyType || [],
         isLimitedEdition: product.isLimitedEdition || false,
         isCustomMade: product.isCustomMade || false,
         customDeliveryDays: product.customDeliveryDays || 0,
@@ -616,7 +600,7 @@ const ProductFormPage: React.FC<ProductFormPageProps> = ({
           if (res.success && res.data) {
             const newMaterial = res.data;
             setMaterialsState(prev => [newMaterial, ...prev]);
-            handleFieldChange('fabric', newMaterial.name);
+            handleFieldChange('material', newMaterial.name);
             setShowCreateMaterial(false);
           } else {
             throw new Error(res.message || 'Failed to create fabric type');
@@ -634,7 +618,7 @@ const ProductFormPage: React.FC<ProductFormPageProps> = ({
           if (res.success && res.data) {
             const newOccasion = res.data;
             setOccasionsState(prev => [newOccasion, ...prev]);
-            handleFieldChange('occasion', newOccasion.name);
+            handleFieldChange('useCase', newOccasion.name);
             setShowCreateOccasion(false);
           } else {
             throw new Error(res.message || 'Failed to create occasion');
@@ -652,7 +636,7 @@ const ProductFormPage: React.FC<ProductFormPageProps> = ({
           if (res.success && res.data) {
             const newSeason = res.data;
             setSeasonsState(prev => [newSeason, ...prev]);
-            handleFieldChange('season', newSeason.name);
+            // Season field doesn't exist on Product type - removed
             setShowCreateSeason(false);
           } else {
             throw new Error(res.message || 'Failed to create season');
@@ -706,7 +690,7 @@ const ProductFormPage: React.FC<ProductFormPageProps> = ({
           if (res.success && res.data) {
             const item = res.data;
             setSleeveLengthsState(prev => [item, ...prev]);
-            handleFieldChange('sleeveLength', item.name);
+            // SleeveLength field doesn't exist on Product type - removed
             setShowCreateSleeveLength(false);
           } else {
             throw new Error(res.message || 'Failed to create sleeve length');
