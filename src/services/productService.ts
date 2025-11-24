@@ -250,9 +250,6 @@ export const productService = {
     copyIfDefined('occasion');
     copyIfDefined('season');
     copyIfDefined('careInstructions');
-    if (rest.modelMeasurements && typeof rest.modelMeasurements === 'object') {
-      whitelisted.modelMeasurements = rest.modelMeasurements;
-    }
     copyIfDefined('designer');
     if (rest.handwork && Array.isArray(rest.handwork) && rest.handwork.length > 0) {
       whitelisted.handwork = rest.handwork;
