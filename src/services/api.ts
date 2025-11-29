@@ -7,7 +7,7 @@ console.log('API Base URL:', baseURL); // Debug log
 
 const api: AxiosInstance = axios.create({
   baseURL,
-  timeout: 10000,
+  timeout: 30000, // 30 seconds - increased for serverless cold starts
   headers: {
     'Content-Type': 'application/json',
   },
