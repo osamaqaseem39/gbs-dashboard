@@ -19,20 +19,10 @@ type AuthAction =
   | { type: 'UPDATE_USER'; payload: User };
 
 const initialState: AuthState = {
-  user: {
-    _id: '1',
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john@example.com',
-    role: 'admin',
-    isActive: true,
-    addresses: [],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  token: 'mock-token',
-  isAuthenticated: true,
-  isLoading: false,
+  user: null,
+  token: null,
+  isAuthenticated: false,
+  isLoading: true, // Start as loading to check for existing token
   error: null,
 };
 
@@ -114,9 +104,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const initializeAuth = async () => {
       const token = localStorage.getItem('token');
-      if (token) {
+      const storedUser = localStorage.getItem('user');
+      
+      if (token && storedUser) {
         try {
           dispatch({ type: 'AUTH_START' });
+          // Try to verify token with backend
           const response = await authService.getCurrentUser();
           if (response.success && response.data?.user) {
             dispatch({
@@ -124,10 +117,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               payload: { user: response.data.user, token },
             });
           } else {
-            dispatch({ type: 'AUTH_FAILURE', payload: 'Invalid token' });
+            // If verification fails, clear storage and logout
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            dispatch({ type: 'AUTH_LOGOUT' });
           }
         } catch (error) {
-          dispatch({ type: 'AUTH_FAILURE', payload: 'Authentication failed' });
+          // If verification fails, clear storage and logout
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          dispatch({ type: 'AUTH_LOGOUT' });
         }
       } else {
         dispatch({ type: 'AUTH_LOGOUT' });
@@ -142,18 +141,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       dispatch({ type: 'AUTH_START' });
       const response = await authService.login({ email, password });
       if (response.success && response.data) {
-        const { user, token } = response.data;
-        localStorage.setItem('token', token);
+        const { user, token, accessToken } = response.data;
+        // Use accessToken if available, otherwise use token
+        const authToken = accessToken || token;
+        if (!authToken) {
+          throw new Error('No token received from server');
+        }
+        localStorage.setItem('token', authToken);
         localStorage.setItem('user', JSON.stringify(user));
-        dispatch({ type: 'AUTH_SUCCESS', payload: { user, token } });
+        dispatch({ type: 'AUTH_SUCCESS', payload: { user, token: authToken } });
       } else {
         dispatch({ type: 'AUTH_FAILURE', payload: response.message || 'Login failed' });
+        throw new Error(response.message || 'Login failed');
       }
     } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error.message || 'Login failed';
       dispatch({
         type: 'AUTH_FAILURE',
-        payload: error.response?.data?.message || 'Login failed',
+        payload: errorMessage,
       });
+      throw error;
     }
   };
 
@@ -164,19 +171,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await authService.register(userData);
       console.log('AuthContext received response:', response);
       if (response.success && response.data) {
-        const { user, token } = response.data;
-        localStorage.setItem('token', token);
+        const { user, token, accessToken } = response.data;
+        // Use accessToken if available, otherwise use token
+        const authToken = accessToken || token;
+        if (!authToken) {
+          throw new Error('No token received from server');
+        }
+        localStorage.setItem('token', authToken);
         localStorage.setItem('user', JSON.stringify(user));
-        dispatch({ type: 'AUTH_SUCCESS', payload: { user, token } });
+        dispatch({ type: 'AUTH_SUCCESS', payload: { user, token: authToken } });
       } else {
         dispatch({ type: 'AUTH_FAILURE', payload: response.message || 'Registration failed' });
+        throw new Error(response.message || 'Registration failed');
       }
     } catch (error: any) {
       console.error('AuthContext.register error:', error);
+      const errorMessage = error.response?.data?.message || error.message || 'Registration failed';
       dispatch({
         type: 'AUTH_FAILURE',
-        payload: error.response?.data?.message || 'Registration failed',
+        payload: errorMessage,
       });
+      throw error;
     }
   };
 
