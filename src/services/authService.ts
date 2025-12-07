@@ -3,13 +3,13 @@ import { ApiResponse, User, LoginForm, RegisterForm } from '../types';
 
 export const authService = {
   // Login user
-  async login(credentials: LoginForm): Promise<ApiResponse<{ user: User; token: string }>> {
+  async login(credentials: LoginForm): Promise<ApiResponse<{ user: User; token?: string; accessToken?: string; refreshToken?: string }>> {
     const response = await api.post('/auth/login', credentials);
     return response.data;
   },
 
   // Register user
-  async register(userData: RegisterForm): Promise<ApiResponse<{ user: User; token: string }>> {
+  async register(userData: RegisterForm): Promise<ApiResponse<{ user: User; token?: string; accessToken?: string; refreshToken?: string }>> {
     console.log('authService.register called with:', userData);
     console.log('Making API call to:', '/auth/register');
     const response = await api.post('/auth/register', userData);
