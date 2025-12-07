@@ -60,34 +60,35 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
 // Main App Component
 const AppContent: React.FC = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return (
-    <Router>
-      <Routes>
-        {/* Public routes */}
-        <Route
-          path="/login"
-          element={
-            isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginForm />
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            isAuthenticated ? <Navigate to="/dashboard" replace /> : <Register />
-          }
-        />
+    <CartProvider customerId={user?._id}>
+      <Router>
+        <Routes>
+          {/* Public routes */}
+          <Route
+            path="/login"
+            element={
+              isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginForm />
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              isAuthenticated ? <Navigate to="/dashboard" replace /> : <Register />
+            }
+          />
 
-        {/* Protected routes */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <DashboardLayout />
-            </ProtectedRoute>
-          }
-        >
+          {/* Protected routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }
+          >
           <Route index element={<Dashboard />} />
           <Route path="products" element={<Products />} />
           <Route path="products/new" element={<ProductFormPageWrapper />} />
@@ -139,10 +140,11 @@ const AppContent: React.FC = () => {
         {/* Redirect root to dashboard */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-        {/* Catch all route */}
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
-    </Router>
+          {/* Catch all route */}
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </Router>
+    </CartProvider>
   );
 };
 
@@ -151,9 +153,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <SidebarProvider>
-        <CartProvider customerId="current-user-id" sessionId="session-id">
-          <AppContent />
-        </CartProvider>
+        <AppContent />
       </SidebarProvider>
     </AuthProvider>
   );

@@ -119,13 +119,23 @@ export const CartProvider: React.FC<CartProviderProps> = ({
 }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
-  // Initialize cart on mount
+  // Initialize cart on mount - only if we have a customerId or sessionId
   useEffect(() => {
-    initializeCart();
+    // Only initialize if we have a valid customer ID (not a placeholder)
+    if (customerId && customerId !== 'current-user-id') {
+      initializeCart();
+    } else if (sessionId && sessionId !== 'session-id') {
+      initializeCart();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerId, sessionId]);
 
   const initializeCart = async () => {
+    // Don't initialize if we have placeholder values
+    if (customerId === 'current-user-id' || sessionId === 'session-id') {
+      return;
+    }
+
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
       
@@ -140,9 +150,12 @@ export const CartProvider: React.FC<CartProviderProps> = ({
           dispatch({ type: 'SET_CART', payload: response.data });
         }
       }
-    } catch (error) {
-      console.error('Error initializing cart:', error);
-      dispatch({ type: 'SET_ERROR', payload: 'Failed to load cart' });
+    } catch (error: any) {
+      // Only log error if it's not a CORS or network error (which are expected when not authenticated)
+      if (error.code !== 'ERR_NETWORK' && error.response?.status !== 401) {
+        console.error('Error initializing cart:', error);
+        dispatch({ type: 'SET_ERROR', payload: 'Failed to load cart' });
+      }
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
