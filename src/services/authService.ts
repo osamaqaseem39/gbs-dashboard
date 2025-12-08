@@ -55,8 +55,10 @@ export const authService = {
 
   // Logout (client-side)
   logout(): void {
+    // Clear all auth-related storage
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = '/login';
+    localStorage.removeItem('refreshToken');
+    // Don't redirect here - let the component handle navigation
   },
 }; 

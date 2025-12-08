@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { ApiResponse } from '../types';
 
 // Create axios instance
@@ -32,13 +32,64 @@ api.interceptors.response.use(
   (response: AxiosResponse<ApiResponse<any>>) => {
     return response;
   },
-  (error) => {
-    if (error.response?.status === 401) {
-      // Unauthorized - redirect to login
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Handle 401 Unauthorized errors
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      // Try to refresh token
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (refreshToken) {
+        try {
+          // Use the current token (which might be expired) to refresh
+          const currentToken = localStorage.getItem('token');
+          const response = await axios.post(
+            `${process.env.REACT_APP_API_URL || 'https://gbs-server.vercel.app/api'}/auth/refresh`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${currentToken || refreshToken}`,
+              },
+            }
+          );
+
+          if (response.data?.success && response.data?.data) {
+            const { token, accessToken } = response.data.data;
+            const newToken = accessToken || token;
+            
+            if (newToken) {
+              localStorage.setItem('token', newToken);
+              // Update the original request with new token
+              originalRequest.headers.Authorization = `Bearer ${newToken}`;
+              // Retry the original request
+              return api(originalRequest);
+            }
+          }
+        } catch (refreshError) {
+          // Refresh failed, clear storage and redirect
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          localStorage.removeItem('refreshToken');
+          // Only redirect if we're not already on login page
+          if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+            window.location.href = '/login';
+          }
+          return Promise.reject(refreshError);
+        }
+      } else {
+        // No refresh token, clear storage and redirect
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('refreshToken');
+        // Only redirect if we're not already on login page
+        if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+          window.location.href = '/login';
+        }
+      }
     }
+
     return Promise.reject(error);
   }
 );
