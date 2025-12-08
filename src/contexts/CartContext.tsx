@@ -37,6 +37,17 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
     case 'SET_ERROR':
       return { ...state, error: action.payload };
     case 'SET_CART':
+      if (!action.payload) {
+        return {
+          ...state,
+          cart: null,
+          items: [],
+          totalAmount: 0,
+          itemCount: 0,
+          isLoading: false,
+          error: null,
+        };
+      }
       return {
         ...state,
         cart: action.payload,
@@ -119,43 +130,74 @@ export const CartProvider: React.FC<CartProviderProps> = ({
 }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
-  // Initialize cart on mount - only if we have a customerId or sessionId
+  // Clear cart when customerId becomes undefined/null (user logged out)
   useEffect(() => {
-    // Only initialize if we have a valid customer ID (not a placeholder)
-    if (customerId && customerId !== 'current-user-id') {
+    if (!customerId && !sessionId) {
+      dispatch({ type: 'CLEAR_CART' });
+      dispatch({ type: 'SET_ERROR', payload: null });
+    }
+  }, [customerId, sessionId]);
+
+  // Initialize cart on mount - only if we have a valid customerId or sessionId
+  useEffect(() => {
+    // Only initialize if we have a valid customer ID (not a placeholder or undefined)
+    if (customerId && typeof customerId === 'string' && customerId !== 'current-user-id' && customerId.trim() !== '') {
       initializeCart();
-    } else if (sessionId && sessionId !== 'session-id') {
+    } else if (sessionId && typeof sessionId === 'string' && sessionId !== 'session-id' && sessionId.trim() !== '') {
       initializeCart();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerId, sessionId]);
 
   const initializeCart = async () => {
-    // Don't initialize if we have placeholder values
+    // Don't initialize if we have placeholder values or invalid IDs
+    if (!customerId && !sessionId) {
+      return;
+    }
+    
+    // Check for placeholder values
     if (customerId === 'current-user-id' || sessionId === 'session-id') {
       return;
+    }
+
+    // Validate customerId if provided
+    if (customerId) {
+      if (typeof customerId !== 'string' || customerId.trim() === '') {
+        return;
+      }
+    }
+
+    // Validate sessionId if provided
+    if (sessionId) {
+      if (typeof sessionId !== 'string' || sessionId.trim() === '') {
+        return;
+      }
     }
 
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
       
-      if (customerId) {
+      if (customerId && typeof customerId === 'string' && customerId !== 'current-user-id') {
         const response = await cartService.getCartByCustomer(customerId);
         if (response.success && response.data) {
           dispatch({ type: 'SET_CART', payload: response.data });
         }
-      } else if (sessionId) {
+      } else if (sessionId && typeof sessionId === 'string' && sessionId !== 'session-id') {
         const response = await cartService.getCartBySession(sessionId);
         if (response.success && response.data) {
           dispatch({ type: 'SET_CART', payload: response.data });
         }
       }
     } catch (error: any) {
-      // Only log error if it's not a CORS or network error (which are expected when not authenticated)
-      if (error.code !== 'ERR_NETWORK' && error.response?.status !== 401) {
+      // Silently handle errors - cart initialization is optional
+      // Only log if it's a real error (not CORS/network/auth errors)
+      if (error.code !== 'ERR_NETWORK' && 
+          error.response?.status !== 401 && 
+          error.response?.status !== 403 &&
+          error.response?.status !== 404) {
         console.error('Error initializing cart:', error);
-        dispatch({ type: 'SET_ERROR', payload: 'Failed to load cart' });
       }
+      // Don't set error state for expected failures (no cart exists, not authenticated, etc.)
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
