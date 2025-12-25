@@ -5,20 +5,20 @@ export { default as ProductFormPage } from '../../pages/products/ProductFormPage
 export { default as ProductSetup } from '../../pages/products/ProductSetup';
 
 // Product Components
-export { default as ProductForm } from './components/ProductForm';
-export { default as ProductFormBasic } from './components/ProductFormBasic';
-export { default as ProductFormInventory } from './components/ProductFormInventory';
-export { default as ProductFormShipping } from './components/ProductFormShipping';
-export { default as ProductFormAttributes } from './components/ProductFormAttributes';
-export { default as ProductFormImages } from './components/ProductFormImages';
-export { default as ProductFormSEO } from './components/ProductFormSEO';
-export { default as ProductFormTabs } from './components/ProductFormTabs';
-export { default as ProductFormTypeSpecific } from './components/ProductFormTypeSpecific';
-export { default as ProductFormVariations } from './components/ProductFormVariations';
-export { default as ProductFilters } from './components/ProductFilters';
+export { default as ProductForm } from 'components/products/ProductForm';
+export { default as ProductFormBasic } from 'components/products/ProductFormBasic';
+export { default as ProductFormInventory } from 'components/products/ProductFormInventory';
+export { default as ProductFormShipping } from 'components/products/ProductFormShipping';
+export { default as ProductFormAttributes } from 'components/products/ProductFormAttributes';
+export { default as ProductFormImages } from 'components/products/ProductFormImages';
+export { default as ProductFormSEO } from 'components/products/ProductFormSEO';
+export { default as ProductFormTabs } from 'components/products/ProductFormTabs';
+export { default as ProductFormTypeSpecific } from 'components/products/ProductFormTypeSpecific';
+export { default as ProductFormVariations } from 'components/products/ProductFormVariations';
+export { default as ProductFilters } from 'components/products/ProductFilters';
 
 // Product Services
-export { productService } from './services/productService';
+export { productService } from 'services/productService';
 
 // Product Types
 export type { Product, ProductVariant, ProductSEO, ProductFilters as ProductFiltersType } from '@/shared/types';
