@@ -22,6 +22,7 @@ import ProductFormShipping from '../components/products/ProductFormShipping';
 import ProductFormAttributes from '../components/products/ProductFormAttributes';
 import ProductFormImages from '../components/products/ProductFormImages';
 import ProductFormSEO from '../components/products/ProductFormSEO';
+import ProductFormTypeSpecific from '../components/products/ProductFormTypeSpecific';
 
 interface ProductFormPageProps {
   product?: Product;
@@ -33,6 +34,8 @@ interface ProductFormPageProps {
   colorFamilies?: any[];
   patterns?: any[];
   sleeveLengths?: any[];
+  ageGroups?: any[];
+  products?: any[];
   onSubmit: (productData: Partial<Product>) => Promise<void>;
   onDelete?: (productId: string) => Promise<void>;
   isLoading?: boolean;
@@ -48,6 +51,8 @@ const ProductFormPage: React.FC<ProductFormPageProps> = ({
   colorFamilies = [],
   patterns = [],
   sleeveLengths = [],
+  ageGroups = [],
+  products = [],
   onSubmit,
   onDelete,
   isLoading = false,
@@ -152,6 +157,7 @@ const ProductFormPage: React.FC<ProductFormPageProps> = ({
 
   const tabs = [
     { id: 'general', name: 'General', icon: '📝' },
+    { id: 'type-specific', name: 'Product Type', icon: '🎯' },
     { id: 'inventory', name: 'Inventory', icon: '📦' },
     { id: 'shipping', name: 'Shipping', icon: '🚚' },
     { id: 'attributes', name: 'Attributes', icon: '🏷️' },
@@ -216,12 +222,37 @@ const ProductFormPage: React.FC<ProductFormPageProps> = ({
         colorFamily: product.colorFamily || '',
         pattern: product.pattern || '',
         ageGroup: product.ageGroup || '',
+        gradeLevel: product.gradeLevel || '',
         isLimitedEdition: product.isLimitedEdition || false,
         isCustomMade: product.isCustomMade || false,
         customDeliveryDays: product.customDeliveryDays || 0,
         sizeChart: product.sizeChart || '',
         sizeChartImageUrl: product.sizeChartImageUrl || '',
         availableSizes: product.availableSizes || [],
+        // Book specific fields
+        author: product.author || '',
+        publisher: product.publisher || '',
+        isbn: product.isbn || '',
+        edition: product.edition || '',
+        pageCount: product.pageCount || 0,
+        language: product.language || '',
+        bindingType: product.bindingType || '',
+        subject: product.subject || '',
+        specialFeatures: product.specialFeatures || [],
+        format: product.format || '',
+        // Uniform specific fields
+        isUniform: product.isUniform || false,
+        uniformType: product.uniformType || '',
+        gender: product.gender || '',
+        uniformSize: product.uniformSize || '',
+        // Book set specific fields
+        isBookSet: product.isBookSet || false,
+        bookSetType: product.bookSetType || '',
+        classLevel: product.classLevel || '',
+        schoolName: product.schoolName || '',
+        board: product.board || '',
+        setItems: product.setItems || [],
+        totalBooksInSet: product.totalBooksInSet || 0,
         seo: product.seo || {
           title: '',
           description: '',
@@ -468,6 +499,21 @@ const ProductFormPage: React.FC<ProductFormPageProps> = ({
                     onAddColorFamily={() => setShowCreateColorFamily(true)}
                     onAddPattern={() => setShowCreatePattern(true)}
                     onAddSleeveLength={() => setShowCreateSleeveLength(true)}
+                    onFieldChange={handleFieldChange}
+                    onNestedFieldChange={handleNestedFieldChange}
+                  />
+                )}
+
+                {activeTab === 'type-specific' && (
+                  <ProductFormTypeSpecific
+                    formData={formData}
+                    errors={errors}
+                    categories={categoriesState}
+                    materials={materialsState}
+                    colorFamilies={colorFamiliesState}
+                    patterns={patternsState}
+                    ageGroups={ageGroups}
+                    products={products}
                     onFieldChange={handleFieldChange}
                     onNestedFieldChange={handleNestedFieldChange}
                   />

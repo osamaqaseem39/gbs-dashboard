@@ -5,7 +5,8 @@ import { categoryService } from '../services/categoryService';
 import { brandService } from '../services/brandService';
 import { 
   materialService, occasionService, seasonService,
-  colorFamilyService, patternService, sleeveLengthService
+  colorFamilyService, patternService, sleeveLengthService,
+  ageGroupService
 } from '../services/masterDataService';
 import { Product, Category, Brand } from '../types';
 import { inventoryService } from '../services/inventoryService';
@@ -29,6 +30,8 @@ const ProductFormPageWrapper: React.FC = () => {
   const [colorFamilies, setColorFamilies] = useState<any[]>([]);
   const [patterns, setPatterns] = useState<any[]>([]);
   const [sleeveLengths, setSleeveLengths] = useState<any[]>([]);
+  const [ageGroups, setAgeGroups] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
     fetchData();
@@ -41,7 +44,7 @@ const ProductFormPageWrapper: React.FC = () => {
       setError(null);
 
       // Fetch categories, brands and master data
-      const [categoriesResponse, brandsResponse, materialsRes, occasionsRes, seasonsRes, colorFamiliesRes, patternsRes, sleeveLengthsRes] = await Promise.all([
+      const [categoriesResponse, brandsResponse, materialsRes, occasionsRes, seasonsRes, colorFamiliesRes, patternsRes, sleeveLengthsRes, ageGroupsRes, productsRes] = await Promise.all([
         categoryService.getCategories(),
         brandService.getBrands(),
         materialService.getAll(),
@@ -50,6 +53,8 @@ const ProductFormPageWrapper: React.FC = () => {
         colorFamilyService.getAll(),
         patternService.getAll(),
         sleeveLengthService.getAll(),
+        ageGroupService.getAll(),
+        productService.getProducts({ limit: 1000 }).catch(() => ({ success: true, data: { products: [] } })),
       ]);
 
       if (categoriesResponse.success && categoriesResponse.data) {
@@ -66,6 +71,8 @@ const ProductFormPageWrapper: React.FC = () => {
       if (colorFamiliesRes.success && colorFamiliesRes.data) setColorFamilies(colorFamiliesRes.data);
       if (patternsRes.success && patternsRes.data) setPatterns(patternsRes.data);
       if (sleeveLengthsRes.success && sleeveLengthsRes.data) setSleeveLengths(sleeveLengthsRes.data);
+      if (ageGroupsRes.success && ageGroupsRes.data) setAgeGroups(ageGroupsRes.data);
+      if (productsRes.success && productsRes.data?.products) setProducts(productsRes.data.products);
 
       // Fetch product if editing
       if (isEditing && id) {
@@ -170,6 +177,8 @@ const ProductFormPageWrapper: React.FC = () => {
       colorFamilies={colorFamilies}
       patterns={patterns}
       sleeveLengths={sleeveLengths}
+      ageGroups={ageGroups}
+      products={products}
       onSubmit={handleSubmit}
       onDelete={isEditing ? handleDelete : undefined}
       isLoading={false}
