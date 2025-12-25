@@ -9,7 +9,7 @@ import {
   CheckCircleIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
 
 const Settings: React.FC = () => {
   const [activeTab, setActiveTab] = useState('general');

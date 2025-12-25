@@ -1,6 +1,6 @@
 import React from 'react';
-import MasterDataListPage from '../components/master-data/MasterDataListPage';
-import { sizeService } from '../services/masterDataService';
+import MasterDataListPage from 'components/master-data/MasterDataListPage';
+import { sizeService } from 'services/masterDataService';
 
 const SizesPage: React.FC = () => {
   return (

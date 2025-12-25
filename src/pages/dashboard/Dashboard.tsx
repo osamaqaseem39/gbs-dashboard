@@ -9,9 +9,9 @@ import {
 } from '@heroicons/react/24/outline';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { dashboardService } from 'services/dashboardService';
-import type { DashboardStats } from '../types';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
-import ErrorMessage from '../components/ui/ErrorMessage';
+import type { DashboardStats } from 'types';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
+import ErrorMessage from 'components/ui/ErrorMessage';
 
 const Dashboard: React.FC = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeftIcon, CheckIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { Product, Category, Brand } from '../types';
+import { Product, Category, Brand } from 'types';
 import { categoryService } from 'services/categoryService';
 import { brandService } from 'services/brandService';
 import { 
@@ -12,17 +12,17 @@ import {
   patternService,
   sleeveLengthService,
 } from 'services/masterDataService';
-import CreateItemModal from '../components/products/modals/CreateItemModal';
-import CategoryForm from '../components/products/CategoryForm';
-import BrandForm from '../components/products/BrandForm';
-import ProductFormTabs from '../components/products/ProductFormTabs';
-import ProductFormBasic from '../components/products/ProductFormBasic';
-import ProductFormInventory from '../components/products/ProductFormInventory';
-import ProductFormShipping from '../components/products/ProductFormShipping';
-import ProductFormAttributes from '../components/products/ProductFormAttributes';
-import ProductFormImages from '../components/products/ProductFormImages';
-import ProductFormSEO from '../components/products/ProductFormSEO';
-import ProductFormTypeSpecific from '../components/products/ProductFormTypeSpecific';
+import CreateItemModal from 'components/products/modals/CreateItemModal';
+import CategoryForm from 'components/products/CategoryForm';
+import BrandForm from 'components/products/BrandForm';
+import ProductFormTabs from 'components/products/ProductFormTabs';
+import ProductFormBasic from 'components/products/ProductFormBasic';
+import ProductFormInventory from 'components/products/ProductFormInventory';
+import ProductFormShipping from 'components/products/ProductFormShipping';
+import ProductFormAttributes from 'components/products/ProductFormAttributes';
+import ProductFormImages from 'components/products/ProductFormImages';
+import ProductFormSEO from 'components/products/ProductFormSEO';
+import ProductFormTypeSpecific from 'components/products/ProductFormTypeSpecific';
 
 interface ProductFormPageProps {
   product?: Product;

@@ -1,6 +1,6 @@
 import React from 'react';
-import MasterDataFormPage from '../components/master-data/MasterDataFormPage';
-import { lengthService } from '../services/masterDataService';
+import MasterDataFormPage from 'components/master-data/MasterDataFormPage';
+import { lengthService } from 'services/masterDataService';
 
 const LengthFormPage: React.FC = () => {
   return (

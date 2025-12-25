@@ -1,6 +1,6 @@
 import React from 'react';
-import MasterDataFormPage from '../components/master-data/MasterDataFormPage';
-import { patternService } from '../services/masterDataService';
+import MasterDataFormPage from 'components/master-data/MasterDataFormPage';
+import { patternService } from 'services/masterDataService';
 
 const PatternFormPage: React.FC = () => {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
-import MasterDataListPage from '../components/master-data/MasterDataListPage';
-import { colorService } from '../services/masterDataService';
+import MasterDataListPage from 'components/master-data/MasterDataListPage';
+import { colorService } from 'services/masterDataService';
 
 const ColorsPage: React.FC = () => {
   return (

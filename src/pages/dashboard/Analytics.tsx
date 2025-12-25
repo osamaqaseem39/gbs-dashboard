@@ -25,7 +25,7 @@ import {
   Area,
 } from 'recharts';
 import { dashboardService } from 'services/dashboardService';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
 
 const Analytics: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);

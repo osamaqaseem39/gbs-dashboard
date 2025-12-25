@@ -12,9 +12,9 @@ import {
   TagIcon,
   LinkIcon,
 } from '@heroicons/react/24/outline';
-import type { Category, Brand } from '../types';
+import type { Category, Brand } from 'types';
 import { useNavigate } from 'react-router-dom';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
 import { categoryService } from 'services/categoryService';
 import { brandService } from 'services/brandService';
 

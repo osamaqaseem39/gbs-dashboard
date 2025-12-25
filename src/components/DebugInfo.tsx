@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { useSidebar } from '../contexts/SidebarContext';
+import { useAuth } from 'contexts/AuthContext';
+import { useSidebar } from 'contexts/SidebarContext';
 
 const DebugInfo: React.FC = () => {
   const { user, isAuthenticated, isLoading } = useAuth();

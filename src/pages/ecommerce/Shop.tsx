@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MagnifyingGlassIcon, FunnelIcon, StarIcon } from '@heroicons/react/24/outline';
-import { productService } from '../services/productService';
-import { categoryService } from '../services/categoryService';
-import { Product, Category } from '../types';
-import AddToCartButton from '../components/ui/AddToCartButton';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
-import ErrorMessage from '../components/ui/ErrorMessage';
+import { productService } from 'services/productService';
+import { categoryService } from 'services/categoryService';
+import { Product, Category } from 'types';
+import AddToCartButton from 'components/ui/AddToCartButton';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
+import ErrorMessage from 'components/ui/ErrorMessage';
 
 const ShopPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);

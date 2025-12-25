@@ -1,6 +1,6 @@
 import React from 'react';
-import MasterDataFormPage from '../components/master-data/MasterDataFormPage';
-import { ageGroupService } from '../services/masterDataService';
+import MasterDataFormPage from 'components/master-data/MasterDataFormPage';
+import { ageGroupService } from 'services/masterDataService';
 
 const AgeGroupFormPage: React.FC = () => {
   return (

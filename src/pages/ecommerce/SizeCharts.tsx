@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PlusIcon, PencilIcon, TrashIcon, EyeIcon } from '@heroicons/react/24/outline';
-import { SizeChart } from '../types';
+import { SizeChart } from 'types';
 
 interface SizeChartsPageProps {}
 

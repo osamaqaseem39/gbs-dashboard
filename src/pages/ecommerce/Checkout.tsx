@@ -7,10 +7,10 @@ import {
   CheckCircleIcon,
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
-import { useCart } from '../contexts/CartContext';
-import { orderService } from '../services/orderService';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
-import ErrorMessage from '../components/ui/ErrorMessage';
+import { useCart } from 'contexts/CartContext';
+import { orderService } from 'services/orderService';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
+import ErrorMessage from 'components/ui/ErrorMessage';
 
 interface AddressForm {
   firstName: string;

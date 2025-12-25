@@ -7,11 +7,11 @@ import {
   EyeIcon,
   BuildingOfficeIcon,
 } from '@heroicons/react/24/outline';
-import { brandService } from '../services/brandService';
-import type { Brand } from '../types';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
-import ErrorMessage from '../components/ui/ErrorMessage';
-import Modal from '../components/ui/Modal';
+import { brandService } from 'services/brandService';
+import type { Brand } from 'types';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
+import ErrorMessage from 'components/ui/ErrorMessage';
+import Modal from 'components/ui/Modal';
 import { useNavigate } from 'react-router-dom';
 
 const Brands: React.FC = () => {

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PlusIcon, PencilIcon, TrashIcon, EyeIcon, EyeSlashIcon, Squares2X2Icon, ListBulletIcon } from '@heroicons/react/24/outline';
-import { categoryService } from '../services/categoryService';
-import type { Category } from '../types';
-import CategoryTree from '../components/CategoryTree';
-import Button from '../components/ui/Button';
-import Card from '../components/ui/Card';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
-import ErrorMessage from '../components/ui/ErrorMessage';
-import Modal from '../components/ui/Modal';
-import Table from '../components/ui/Table';
-import SearchInput from '../components/ui/SearchInput';
+import { categoryService } from 'services/categoryService';
+import type { Category } from 'types';
+import CategoryTree from 'components/CategoryTree';
+import Button from 'components/ui/Button';
+import Card from 'components/ui/Card';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
+import ErrorMessage from 'components/ui/ErrorMessage';
+import Modal from 'components/ui/Modal';
+import Table from 'components/ui/Table';
+import SearchInput from 'components/ui/SearchInput';
 
 const Categories: React.FC = () => {
   const navigate = useNavigate();

@@ -9,10 +9,10 @@ import {
   MapPinIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
-import { customerService } from '../services/customerService';
-import type { Customer } from '../types';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
-import ErrorMessage from '../components/ui/ErrorMessage';
+import { customerService } from 'services/customerService';
+import type { Customer } from 'types';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
+import ErrorMessage from 'components/ui/ErrorMessage';
 
 const Customers: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);

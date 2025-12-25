@@ -1,6 +1,6 @@
 import React from 'react';
-import MasterDataFormPage from '../components/master-data/MasterDataFormPage';
-import { fitService } from '../services/masterDataService';
+import MasterDataFormPage from 'components/master-data/MasterDataFormPage';
+import { fitService } from 'services/masterDataService';
 
 const FitFormPage: React.FC = () => {
   return (

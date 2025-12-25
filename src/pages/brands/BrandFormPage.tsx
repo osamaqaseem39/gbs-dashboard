@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import BrandForm from '../components/products/BrandForm';
-import type { Brand } from '../types';
-import { brandService } from '../services/brandService';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
+import BrandForm from 'components/products/BrandForm';
+import type { Brand } from 'types';
+import { brandService } from 'services/brandService';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
 
 const BrandFormPage: React.FC = () => {
   const navigate = useNavigate();

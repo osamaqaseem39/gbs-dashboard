@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeftIcon, CheckIcon, TrashIcon } from '@heroicons/react/24/outline';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
-import ErrorMessage from '../components/ui/ErrorMessage';
-import { seasonService, MasterDataItem } from '../services/masterDataService';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
+import ErrorMessage from 'components/ui/ErrorMessage';
+import { seasonService, MasterDataItem } from 'services/masterDataService';
 
 const SeasonFormPage: React.FC = () => {
   const navigate = useNavigate();

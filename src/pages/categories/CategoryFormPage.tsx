@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import CategoryForm from '../components/products/CategoryForm';
-import type { Category } from '../types';
-import { categoryService } from '../services/categoryService';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
+import CategoryForm from 'components/products/CategoryForm';
+import type { Category } from 'types';
+import { categoryService } from 'services/categoryService';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
 
 const CategoryFormPage: React.FC = () => {
   const navigate = useNavigate();

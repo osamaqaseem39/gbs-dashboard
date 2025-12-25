@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PlusIcon, PencilIcon, TrashIcon, EyeIcon, EyeSlashIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { materialService, MasterDataItem } from '../services/masterDataService';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
+import { materialService, MasterDataItem } from 'services/masterDataService';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
 
 const MaterialsPage: React.FC = () => {
   const navigate = useNavigate();

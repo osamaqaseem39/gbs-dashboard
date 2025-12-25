@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { cartService } from '../services/cartService';
-import { Cart, CartItem, Product } from '../types';
+import { cartService } from 'services/cartService';
+import { Cart, CartItem, Product } from 'types';
 
 interface CartState {
   cart: Cart | null;

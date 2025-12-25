@@ -11,10 +11,10 @@ import {
 } from '@heroicons/react/24/outline';
 import { productService } from 'services/productService';
 import { categoryService } from 'services/categoryService';
-import type { Product, Category, ProductFilters as ProductFiltersType } from '../types';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
-import ErrorMessage from '../components/ui/ErrorMessage';
-import ProductFilters from '../components/products/ProductFilters';
+import type { Product, Category, ProductFilters as ProductFiltersType } from 'types';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
+import ErrorMessage from 'components/ui/ErrorMessage';
+import ProductFilters from 'components/products/ProductFilters';
 
 const Products: React.FC = () => {
   const navigate = useNavigate();

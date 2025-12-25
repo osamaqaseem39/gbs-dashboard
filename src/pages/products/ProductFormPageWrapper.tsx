@@ -8,11 +8,11 @@ import {
   colorFamilyService, patternService, sleeveLengthService,
   ageGroupService
 } from 'services/masterDataService';
-import { Product, Category, Brand } from '../types';
+import { Product, Category, Brand } from 'types';
 import { inventoryService } from 'services/inventoryService';
 import ProductFormPage from './ProductFormPage';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
-import ErrorMessage from '../components/ui/ErrorMessage';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
+import ErrorMessage from 'components/ui/ErrorMessage';
 
 const ProductFormPageWrapper: React.FC = () => {
   const { id } = useParams();

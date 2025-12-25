@@ -1,6 +1,6 @@
 import React from 'react';
-import MasterDataListPage from '../components/master-data/MasterDataListPage';
-import { necklineService } from '../services/masterDataService';
+import MasterDataListPage from 'components/master-data/MasterDataListPage';
+import { necklineService } from 'services/masterDataService';
 
 const NecklinesPage: React.FC = () => {
   return (

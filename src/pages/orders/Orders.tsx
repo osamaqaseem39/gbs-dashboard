@@ -7,10 +7,10 @@ import {
   CheckCircleIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
-import { orderService } from '../services/orderService';
-import type { Order } from '../types';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
-import ErrorMessage from '../components/ui/ErrorMessage';
+import { orderService } from 'services/orderService';
+import type { Order } from 'types';
+import LoadingSpinner from 'components/ui/LoadingSpinner';
+import ErrorMessage from 'components/ui/ErrorMessage';
 
 const Orders: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);

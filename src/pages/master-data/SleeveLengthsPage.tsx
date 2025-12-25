@@ -1,6 +1,6 @@
 import React from 'react';
-import MasterDataListPage from '../components/master-data/MasterDataListPage';
-import { sleeveLengthService } from '../services/masterDataService';
+import MasterDataListPage from 'components/master-data/MasterDataListPage';
+import { sleeveLengthService } from 'services/masterDataService';
 
 const SleeveLengthsPage: React.FC = () => {
   return (
