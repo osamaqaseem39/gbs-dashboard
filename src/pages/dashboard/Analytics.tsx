@@ -24,7 +24,7 @@ import {
   AreaChart,
   Area,
 } from 'recharts';
-import { dashboardService } from '../services/dashboardService';
+import { dashboardService } from 'services/dashboardService';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const Analytics: React.FC = () => {
