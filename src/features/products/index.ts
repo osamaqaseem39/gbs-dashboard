@@ -21,4 +21,4 @@ export { default as ProductFilters } from 'components/products/ProductFilters';
 export { productService } from 'services/productService';
 
 // Product Types
-export type { Product, ProductVariant, ProductSEO, ProductFilters as ProductFiltersType } from '@/shared/types';
+export type { Product, ProductVariant, ProductSEO, ProductFilters as ProductFiltersType } from 'types';
