@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeftIcon, CheckIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Product, Category, Brand } from '../types';
-import { categoryService } from '../services/categoryService';
-import { brandService } from '../services/brandService';
+import { categoryService } from 'services/categoryService';
+import { brandService } from 'services/brandService';
 import { 
   materialService, 
   occasionService, 
@@ -11,7 +11,7 @@ import {
   colorFamilyService,
   patternService,
   sleeveLengthService,
-} from '../services/masterDataService';
+} from 'services/masterDataService';
 import CreateItemModal from '../components/products/modals/CreateItemModal';
 import CategoryForm from '../components/products/CategoryForm';
 import BrandForm from '../components/products/BrandForm';

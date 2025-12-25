@@ -15,8 +15,8 @@ import {
 import type { Category, Brand } from '../types';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
-import { categoryService } from '../services/categoryService';
-import { brandService } from '../services/brandService';
+import { categoryService } from 'services/categoryService';
+import { brandService } from 'services/brandService';
 
 const ProductSetup: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);

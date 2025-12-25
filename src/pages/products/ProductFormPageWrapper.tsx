@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { productService } from '../services/productService';
-import { categoryService } from '../services/categoryService';
-import { brandService } from '../services/brandService';
+import { productService } from 'services/productService';
+import { categoryService } from 'services/categoryService';
+import { brandService } from 'services/brandService';
 import { 
   materialService, occasionService, seasonService,
   colorFamilyService, patternService, sleeveLengthService,
   ageGroupService
-} from '../services/masterDataService';
+} from 'services/masterDataService';
 import { Product, Category, Brand } from '../types';
-import { inventoryService } from '../services/inventoryService';
+import { inventoryService } from 'services/inventoryService';
 import ProductFormPage from './ProductFormPage';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import ErrorMessage from '../components/ui/ErrorMessage';
