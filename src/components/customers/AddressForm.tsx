@@ -1,6 +1,6 @@
 import React from 'react';
 import FieldWithTooltip from '../ui/FieldWithTooltip';
-import { Address } from '../../types';
+import { Address } from '../../types/normalized';
 
 interface AddressFormProps {
   address: Partial<Address>;
@@ -45,7 +45,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
             error={errors.addressType}
           >
             <select
-              value={address.type || 'both'}
+              value={address.addressType || 'both'}
               onChange={(e) => onFieldChange('addressType', e.target.value)}
               className={`input-field ${errors.addressType ? 'border-red-300' : ''}`}
             >
