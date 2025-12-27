@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import FieldWithTooltip from '../ui/FieldWithTooltip';
 import { attributeService } from '../../services/masterDataService';
+import { Attribute } from '../../types/normalized';
 
 interface ProductFormAttributesProps {
   attributes: Array<{
@@ -15,14 +16,6 @@ interface ProductFormAttributesProps {
     value: string | number | boolean;
     displayValue?: string;
   }>) => void;
-}
-
-interface Attribute {
-  _id: string;
-  name: string;
-  slug: string;
-  type: 'select' | 'text' | 'number';
-  values: string[];
 }
 
 const ProductFormAttributes: React.FC<ProductFormAttributesProps> = ({
@@ -41,7 +34,8 @@ const ProductFormAttributes: React.FC<ProductFormAttributesProps> = ({
       try {
         const response = await attributeService.getAll();
         if (response.success && response.data) {
-          setAvailableAttributes(response.data);
+          // Cast to normalized Attribute type (backend returns normalized structure)
+          setAvailableAttributes(response.data as Attribute[]);
         }
       } catch (error) {
         console.error('Error loading attributes:', error);
