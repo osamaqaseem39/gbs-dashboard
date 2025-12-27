@@ -14,6 +14,7 @@ import { warehouseService, Warehouse } from '../../services/warehouseService';
 import FieldWithTooltip from '../ui/FieldWithTooltip';
 
 interface ProductFormInventoryProps {
+  formData?: Partial<Product>;
   inventory: {
     warehouseId: string;
     currentStock: number;
@@ -34,6 +35,7 @@ interface SizeInventory {
 }
 
 const ProductFormInventory: React.FC<ProductFormInventoryProps> = ({
+  formData = {},
   inventory,
   errors,
   onFieldChange,
@@ -73,7 +75,7 @@ const ProductFormInventory: React.FC<ProductFormInventoryProps> = ({
 
   // Load existing size inventory from formData if available (for editing)
   useEffect(() => {
-    if (formData.sizeInventory && Array.isArray(formData.sizeInventory) && formData.sizeInventory.length > 0) {
+    if (formData && formData.sizeInventory && Array.isArray(formData.sizeInventory) && formData.sizeInventory.length > 0) {
       setSizeInventory(formData.sizeInventory as SizeInventory[]);
       if (onSizeInventoryChange) {
         onSizeInventoryChange(formData.sizeInventory as SizeInventory[]);
