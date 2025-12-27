@@ -107,7 +107,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
           >
             <input
               type="text"
-              value={address.addressLine1 || address.street || ''}
+              value={address.addressLine1 || ''}
               onChange={(e) => onFieldChange('addressLine1', e.target.value)}
               className={`input-field ${errors.addressLine1 ? 'border-red-300' : ''}`}
               placeholder="123 Main Street"
@@ -166,7 +166,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
           >
             <input
               type="text"
-              value={address.postalCode || address.zipCode || ''}
+              value={address.postalCode || ''}
               onChange={(e) => onFieldChange('postalCode', e.target.value)}
               className={`input-field ${errors.postalCode ? 'border-red-300' : ''}`}
               placeholder="54000"
