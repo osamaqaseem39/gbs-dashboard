@@ -14,6 +14,7 @@ import Inventory from './pages/inventory/Inventory';
 import ProductSetup from './pages/products/ProductSetup';
 import Orders from './pages/orders/Orders';
 import Customers from './pages/customers/Customers';
+import CustomerFormPage from './pages/customers/CustomerFormPage';
 import Brands from './pages/brands/Brands';
 import BrandFormPage from './pages/brands/BrandFormPage';
 import CategoryFormPage from './pages/categories/CategoryFormPage';
@@ -100,6 +101,8 @@ const AppContent: React.FC = () => {
           <Route path="product-setup" element={<ProductSetup />} />
           <Route path="orders" element={<Orders />} />
           <Route path="customers" element={<Customers />} />
+          <Route path="customers/new" element={<CustomerFormPage />} />
+          <Route path="customers/:id/edit" element={<CustomerFormPage />} />
           <Route path="brands" element={<Brands />} />
           <Route path="brands/new" element={<BrandFormPage />} />
           <Route path="brands/:id/edit" element={<BrandFormPage />} />

@@ -1,266 +1,344 @@
 import React, { useState, useEffect } from 'react';
-import { PlusIcon } from '@heroicons/react/24/outline';
-import { Product, Attribute, Color } from '../../types';
-import FeaturesModal from './modals/FeaturesModal';
-import ColorsModal from './modals/ColorsModal';
-import AttributesModal from './modals/AttributesModal';
-import SizesModal from './modals/SizesModal';
-import { attributeService, colorService } from '../../services/masterDataService';
+import { PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import FieldWithTooltip from '../ui/FieldWithTooltip';
+import { attributeService } from '../../services/masterDataService';
 
 interface ProductFormAttributesProps {
-  formData: Partial<Product>;
+  attributes: Array<{
+    attributeId: string;
+    value: string | number | boolean;
+    displayValue?: string;
+  }>;
   errors: Record<string, string>;
-  onFieldChange: (field: string, value: any) => void;
+  onAttributesChange: (attributes: Array<{
+    attributeId: string;
+    value: string | number | boolean;
+    displayValue?: string;
+  }>) => void;
+}
+
+interface Attribute {
+  _id: string;
+  name: string;
+  slug: string;
+  type: 'select' | 'text' | 'number';
+  values: string[];
 }
 
 const ProductFormAttributes: React.FC<ProductFormAttributesProps> = ({
-  formData,
+  attributes = [],
   errors,
-  onFieldChange,
+  onAttributesChange,
 }) => {
-  const [isFeaturesModalOpen, setIsFeaturesModalOpen] = useState(false);
-  const [isColorsModalOpen, setIsColorsModalOpen] = useState(false);
-  const [isAttributesModalOpen, setIsAttributesModalOpen] = useState(false);
-  const [isSizesModalOpen, setIsSizesModalOpen] = useState(false);
-  const [attributeMap, setAttributeMap] = useState<Record<string, Attribute>>({});
-  const [colorMap, setColorMap] = useState<Record<string, Color>>({});
+  const [availableAttributes, setAvailableAttributes] = useState<Attribute[]>([]);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [selectedAttributeId, setSelectedAttributeId] = useState('');
+  const [attributeValue, setAttributeValue] = useState('');
+  const [displayValue, setDisplayValue] = useState('');
 
-  // Load attribute and color data for display
   useEffect(() => {
-    const loadData = async () => {
-      // Load attributes
+    const loadAttributes = async () => {
       try {
-        const attrResponse = await attributeService.getAll();
-        if (attrResponse.success && attrResponse.data) {
-          const map: Record<string, Attribute> = {};
-          attrResponse.data.forEach((attr: Attribute) => {
-            map[attr._id] = attr;
-          });
-          setAttributeMap(map);
+        const response = await attributeService.getAll();
+        if (response.success && response.data) {
+          setAvailableAttributes(response.data);
         }
       } catch (error) {
         console.error('Error loading attributes:', error);
       }
+    };
+    loadAttributes();
+  }, []);
 
-      // Load colors
-      try {
-        const colorResponse = await colorService.getAll();
-        if (colorResponse.success && colorResponse.data) {
-          const map: Record<string, Color> = {};
-          colorResponse.data.forEach((color: Color) => {
-            map[color._id] = color;
-          });
-          setColorMap(map);
-        }
-      } catch (error) {
-        console.error('Error loading colors:', error);
-      }
+  const handleAddAttribute = () => {
+    if (!selectedAttributeId || !attributeValue) return;
+
+    const attribute = availableAttributes.find(a => a._id === selectedAttributeId);
+    if (!attribute) return;
+
+    let processedValue: string | number | boolean = attributeValue;
+    if (attribute.type === 'number') {
+      processedValue = parseFloat(attributeValue) || 0;
+    } else if (attribute.type === 'select') {
+      processedValue = attributeValue;
+    } else {
+      processedValue = attributeValue;
+    }
+
+    const newAttribute = {
+      attributeId: selectedAttributeId,
+      value: processedValue,
+      displayValue: displayValue || attributeValue,
     };
 
-    loadData();
-  }, []);
+    onAttributesChange([...attributes, newAttribute]);
+    setSelectedAttributeId('');
+    setAttributeValue('');
+    setDisplayValue('');
+    setShowAddModal(false);
+  };
+
+  const handleRemoveAttribute = (index: number) => {
+    const updated = attributes.filter((_, i) => i !== index);
+    onAttributesChange(updated);
+  };
+
+  const handleUpdateAttribute = (index: number, field: 'value' | 'displayValue', newValue: string) => {
+    const updated = [...attributes];
+    if (field === 'value') {
+      const attr = availableAttributes.find(a => a._id === updated[index].attributeId);
+      if (attr?.type === 'number') {
+        updated[index].value = parseFloat(newValue) || 0;
+      } else {
+        updated[index].value = newValue;
+      }
+    } else {
+      updated[index].displayValue = newValue;
+    }
+    onAttributesChange(updated);
+  };
+
+  const getAttributeName = (attributeId: string) => {
+    return availableAttributes.find(a => a._id === attributeId)?.name || attributeId;
+  };
+
+  const getAttributeType = (attributeId: string) => {
+    return availableAttributes.find(a => a._id === attributeId)?.type || 'text';
+  };
+
+  const getAttributeValues = (attributeId: string) => {
+    return availableAttributes.find(a => a._id === attributeId)?.values || [];
+  };
+
+  const unusedAttributes = availableAttributes.filter(
+    attr => !attributes.some(pa => pa.attributeId === attr._id)
+  );
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-lg font-medium text-gray-900 mb-4">Product Attributes</h2>
-        
-        {/* Features */}
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Product Features
-            </label>
-            <button
-              type="button"
-              onClick={() => setIsFeaturesModalOpen(true)}
-              className="flex items-center px-3 py-1 text-sm text-blue-600 hover:text-blue-700 border border-blue-300 rounded-md hover:bg-blue-50"
-            >
-              <PlusIcon className="h-4 w-4 mr-1" />
-              Manage Features
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-2 min-h-[2rem] p-3 border border-gray-200 rounded-md">
-            {formData.features?.map((feature, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
-              >
-                {feature}
-              </span>
-            ))}
-            {(!formData.features || formData.features.length === 0) && (
-              <span className="text-gray-500 text-sm">No features added</span>
-            )}
-          </div>
-        </div>
+        <p className="text-sm text-gray-500 mb-6">
+          Add flexible attributes to describe your product (e.g., Material, Author, Publisher, etc.)
+        </p>
 
-        {/* Colors */}
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Available Colors
-            </label>
-            <button
-              type="button"
-              onClick={() => setIsColorsModalOpen(true)}
-              className="flex items-center px-3 py-1 text-sm text-blue-600 hover:text-blue-700 border border-blue-300 rounded-md hover:bg-blue-50"
-            >
-              <PlusIcon className="h-4 w-4 mr-1" />
-              Manage Colors
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-2 min-h-[2rem] p-3 border border-gray-200 rounded-md">
-            {formData.colors?.map((colorSelection, index) => {
-              const color = colorMap[colorSelection.colorId];
+        {/* Existing Attributes */}
+        {attributes.length > 0 && (
+          <div className="space-y-4 mb-6">
+            {attributes.map((attr, index) => {
+              const attribute = availableAttributes.find(a => a._id === attr.attributeId);
+              const isSelect = attribute?.type === 'select';
+              const isNumber = attribute?.type === 'number';
+
               return (
-                <div
-                  key={index}
-                  className="inline-flex items-center gap-2 px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
-                >
-                  {colorSelection.imageUrl && (
-                    <img
-                      src={colorSelection.imageUrl}
-                      alt={color?.name || 'Color'}
-                      className="w-4 h-4 rounded-full object-cover"
-                    />
-                  )}
-                  <span>{color?.name || colorSelection.colorId}</span>
+                <div key={index} className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h4 className="font-medium text-gray-900">{getAttributeName(attr.attributeId)}</h4>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Type: {getAttributeType(attr.attributeId)}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveAttribute(index)}
+                      className="text-red-600 hover:text-red-700"
+                    >
+                      <TrashIcon className="h-5 w-5" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-3">
+                    {isSelect ? (
+                      <FieldWithTooltip
+                        label="Value"
+                        tooltip={`Select a value for ${getAttributeName(attr.attributeId)}`}
+                      >
+                        <select
+                          value={String(attr.value)}
+                          onChange={(e) => handleUpdateAttribute(index, 'value', e.target.value)}
+                          className="input-field"
+                        >
+                          <option value="">Select value</option>
+                          {getAttributeValues(attr.attributeId).map((val) => (
+                            <option key={val} value={val}>
+                              {val}
+                            </option>
+                          ))}
+                        </select>
+                      </FieldWithTooltip>
+                    ) : (
+                      <FieldWithTooltip
+                        label="Value"
+                        tooltip={`Enter the value for ${getAttributeName(attr.attributeId)}`}
+                      >
+                        <input
+                          type={isNumber ? 'number' : 'text'}
+                          value={String(attr.value)}
+                          onChange={(e) => handleUpdateAttribute(index, 'value', e.target.value)}
+                          className="input-field"
+                          placeholder={`Enter ${getAttributeName(attr.attributeId).toLowerCase()}`}
+                        />
+                      </FieldWithTooltip>
+                    )}
+
+                    <FieldWithTooltip
+                      label="Display Value (Optional)"
+                      tooltip="Custom display text. If empty, the value will be used."
+                    >
+                      <input
+                        type="text"
+                        value={attr.displayValue || ''}
+                        onChange={(e) => handleUpdateAttribute(index, 'displayValue', e.target.value)}
+                        className="input-field"
+                        placeholder="Custom display text (optional)"
+                      />
+                    </FieldWithTooltip>
+                  </div>
                 </div>
               );
             })}
-            {(!formData.colors || formData.colors.length === 0) && (
-              <span className="text-gray-500 text-sm">No colors added</span>
-            )}
           </div>
-        </div>
+        )}
 
-        {/* Available Sizes */}
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-2">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Available Sizes
-              </label>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Add sizes to enable size-wise inventory management
-              </p>
+        {/* Add Attribute Button */}
+        <button
+          type="button"
+          onClick={() => setShowAddModal(true)}
+          className="flex items-center gap-2 px-4 py-2 border border-dashed border-gray-300 rounded-lg text-gray-700 hover:border-gray-400 hover:bg-gray-50 transition-colors"
+        >
+          <PlusIcon className="h-5 w-5" />
+          <span>Add Attribute</span>
+        </button>
+
+        {/* Add Attribute Modal */}
+        {showAddModal && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">Add Product Attribute</h3>
+                <button
+                  onClick={() => {
+                    setShowAddModal(false);
+                    setSelectedAttributeId('');
+                    setAttributeValue('');
+                    setDisplayValue('');
+                  }}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <XMarkIcon className="h-6 w-6" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <FieldWithTooltip
+                  label="Attribute"
+                  required
+                  tooltip="Select the attribute type to add (e.g., Material, Author, Publisher)"
+                >
+                  <select
+                    value={selectedAttributeId}
+                    onChange={(e) => {
+                      setSelectedAttributeId(e.target.value);
+                      setAttributeValue('');
+                    }}
+                    className="input-field"
+                  >
+                    <option value="">Select attribute</option>
+                    {unusedAttributes.map((attr) => (
+                      <option key={attr._id} value={attr._id}>
+                        {attr.name} ({attr.type})
+                      </option>
+                    ))}
+                  </select>
+                </FieldWithTooltip>
+
+                {selectedAttributeId && (
+                  <>
+                    {getAttributeType(selectedAttributeId) === 'select' ? (
+                      <FieldWithTooltip
+                        label="Value"
+                        required
+                        tooltip="Select a value from the available options"
+                      >
+                        <select
+                          value={attributeValue}
+                          onChange={(e) => setAttributeValue(e.target.value)}
+                          className="input-field"
+                        >
+                          <option value="">Select value</option>
+                          {getAttributeValues(selectedAttributeId).map((val) => (
+                            <option key={val} value={val}>
+                              {val}
+                            </option>
+                          ))}
+                        </select>
+                      </FieldWithTooltip>
+                    ) : (
+                      <FieldWithTooltip
+                        label="Value"
+                        required
+                        tooltip={`Enter the ${getAttributeName(selectedAttributeId).toLowerCase()} value`}
+                      >
+                        <input
+                          type={getAttributeType(selectedAttributeId) === 'number' ? 'number' : 'text'}
+                          value={attributeValue}
+                          onChange={(e) => setAttributeValue(e.target.value)}
+                          className="input-field"
+                          placeholder={`Enter ${getAttributeName(selectedAttributeId).toLowerCase()}`}
+                        />
+                      </FieldWithTooltip>
+                    )}
+
+                    <FieldWithTooltip
+                      label="Display Value (Optional)"
+                      tooltip="Custom display text. If empty, the value will be used."
+                    >
+                      <input
+                        type="text"
+                        value={displayValue}
+                        onChange={(e) => setDisplayValue(e.target.value)}
+                        className="input-field"
+                        placeholder="Custom display text (optional)"
+                      />
+                    </FieldWithTooltip>
+                  </>
+                )}
+
+                <div className="flex justify-end gap-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowAddModal(false);
+                      setSelectedAttributeId('');
+                      setAttributeValue('');
+                      setDisplayValue('');
+                    }}
+                    className="btn btn-secondary"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleAddAttribute}
+                    disabled={!selectedAttributeId || !attributeValue}
+                    className="btn btn-primary"
+                  >
+                    Add Attribute
+                  </button>
+                </div>
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setIsSizesModalOpen(true)}
-              className="flex items-center px-3 py-1 text-sm text-amber-600 hover:text-amber-700 border border-amber-300 rounded-md hover:bg-amber-50 transition-colors"
-            >
-              <PlusIcon className="h-4 w-4 mr-1" />
-              Manage Sizes
-            </button>
           </div>
-          <div className="flex flex-wrap gap-2 min-h-[2rem] p-3 border border-gray-200 rounded-md bg-gradient-to-br from-amber-50/50 to-orange-50/50">
-            {formData.availableSizes && formData.availableSizes.length > 0 ? (
-              formData.availableSizes.map((size, index) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-semibold bg-amber-100 text-amber-800 border border-amber-200 shadow-sm"
-                >
-                  {size}
-                </span>
-              ))
-            ) : (
-              <span className="text-gray-500 text-sm">No sizes added</span>
-            )}
-          </div>
-        </div>
+        )}
 
-        {/* Attributes */}
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Product Attributes
-            </label>
-            <button
-              type="button"
-              onClick={() => setIsAttributesModalOpen(true)}
-              className="flex items-center px-3 py-1 text-sm text-blue-600 hover:text-blue-700 border border-blue-300 rounded-md hover:bg-blue-50"
-            >
-              <PlusIcon className="h-4 w-4 mr-1" />
-              Manage Attributes
-            </button>
+        {attributes.length === 0 && (
+          <div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+            <p className="text-gray-500">No attributes added yet</p>
+            <p className="text-sm text-gray-400 mt-1">Click "Add Attribute" to get started</p>
           </div>
-          <div className="flex flex-wrap gap-2 min-h-[2rem] p-3 border border-gray-200 rounded-md">
-            {formData.attributes?.map((attributeId, index) => {
-              const attribute = attributeMap[attributeId];
-              return (
-                <span
-                  key={index}
-                  className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
-                >
-                  {attribute?.name || attributeId}
-                </span>
-              );
-            })}
-            {(!formData.attributes || formData.attributes.length === 0) && (
-              <span className="text-gray-500 text-sm">No attributes added</span>
-            )}
-          </div>
-        </div>
-
+        )}
       </div>
-
-      {/* Tags */}
-      <div className="border-t pt-6">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">Tags</h2>
-        
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Product Tags
-          </label>
-          <div className="flex flex-wrap gap-2 min-h-[2rem] p-3 border border-gray-200 rounded-md">
-            {formData.tags?.map((tag, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800"
-              >
-                {tag}
-              </span>
-            ))}
-            {(!formData.tags || formData.tags.length === 0) && (
-              <span className="text-gray-500 text-sm">No tags added</span>
-            )}
-          </div>
-          <p className="mt-1 text-sm text-gray-500">
-            Tags help customers find your product. Separate multiple tags with commas.
-          </p>
-        </div>
-      </div>
-
-      {/* Modals */}
-      <FeaturesModal
-        isOpen={isFeaturesModalOpen}
-        onClose={() => setIsFeaturesModalOpen(false)}
-        features={formData.features || []}
-        onFeaturesChange={(features) => onFieldChange('features', features)}
-      />
-      
-      <ColorsModal
-        isOpen={isColorsModalOpen}
-        onClose={() => setIsColorsModalOpen(false)}
-        colors={formData.colors || []}
-        onColorsChange={(colors) => onFieldChange('colors', colors)}
-      />
-      
-      <AttributesModal
-        isOpen={isAttributesModalOpen}
-        onClose={() => setIsAttributesModalOpen(false)}
-        attributes={formData.attributes || []}
-        onAttributesChange={(attributes) => onFieldChange('attributes', attributes)}
-      />
-      
-      <SizesModal
-        isOpen={isSizesModalOpen}
-        onClose={() => setIsSizesModalOpen(false)}
-        sizes={formData.availableSizes || []}
-        onSizesChange={(sizes) => onFieldChange('availableSizes', sizes)}
-      />
     </div>
   );
 };

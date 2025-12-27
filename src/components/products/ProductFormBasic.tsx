@@ -1,5 +1,6 @@
 import React from 'react';
 import { Product, Category, Brand } from '../../types';
+import FieldWithTooltip from '../ui/FieldWithTooltip';
 
 interface ProductFormBasicProps {
   formData: Partial<Product>;
@@ -82,42 +83,44 @@ const ProductFormBasic: React.FC<ProductFormBasicProps> = ({
         
         {/* Product Name */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Product Name *
-          </label>
-          <input
-            type="text"
-            value={formData.name || ''}
-            onChange={(e) => onFieldChange('name', e.target.value)}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-              errors.name ? 'border-red-300' : 'border-gray-300'
-            }`}
-            placeholder="Enter product name"
-          />
-          <p className="mt-1 text-sm text-gray-500">Use a clear, descriptive title (min 3 characters).</p>
-          {errors.name && (
-            <p className="mt-1 text-sm text-red-600">{errors.name}</p>
-          )}
+          <FieldWithTooltip
+            label="Product Name"
+            required
+            tooltip="The name of the product as it will appear to customers. Use a clear, descriptive title."
+            error={errors.name}
+            helpText="Use a clear, descriptive title (min 3 characters)"
+          >
+            <input
+              type="text"
+              value={formData.name || ''}
+              onChange={(e) => onFieldChange('name', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                errors.name ? 'border-red-300' : 'border-gray-300'
+              }`}
+              placeholder="Enter product name"
+            />
+          </FieldWithTooltip>
         </div>
 
         {/* SKU */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            SKU *
-          </label>
-          <input
-            type="text"
-            value={formData.sku || ''}
-            onChange={(e) => onFieldChange('sku', e.target.value)}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-              errors.sku ? 'border-red-300' : 'border-gray-300'
-            }`}
-            placeholder="Enter SKU"
-          />
-          <p className="mt-1 text-sm text-gray-500">Allowed: letters, numbers, dashes, underscores, and dots.</p>
-          {errors.sku && (
-            <p className="mt-1 text-sm text-red-600">{errors.sku}</p>
-          )}
+          <FieldWithTooltip
+            label="SKU (Stock Keeping Unit)"
+            required
+            tooltip="Unique identifier for inventory tracking. Must be unique across all products. Format: uppercase letters, numbers, dashes, underscores."
+            error={errors.sku}
+            helpText="Allowed: letters, numbers, dashes, underscores (e.g., PROD-001)"
+          >
+            <input
+              type="text"
+              value={formData.sku || ''}
+              onChange={(e) => onFieldChange('sku', e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                errors.sku ? 'border-red-300' : 'border-gray-300'
+              }`}
+              placeholder="Enter SKU"
+            />
+          </FieldWithTooltip>
         </div>
 
         {/* Description */}
@@ -182,25 +185,26 @@ const ProductFormBasic: React.FC<ProductFormBasicProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Brand
-            </label>
-            <select
-              value={getBrandValue()}
-              onChange={(e) => onFieldChange('brand', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            <FieldWithTooltip
+              label="Brand"
+              tooltip="Select the brand this product belongs to. Optional but recommended for brand-aware shoppers."
             >
-              <option value="">Select Brand</option>
-              {brands.map((brand) => (
-                <option key={brand._id} value={brand._id}>
-                  {brand.name}
-                </option>
-              ))}
-            </select>
-            <p className="mt-1 text-sm text-gray-500">Optional but recommended for brand-aware shoppers.</p>
-            <button type="button" onClick={onAddBrand} className="mt-2 text-sm text-blue-600 hover:text-blue-700">
-              + Add new brand
-            </button>
+              <select
+                value={getBrandValue()}
+                onChange={(e) => onFieldChange('brandId', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Select Brand</option>
+                {brands.map((brand) => (
+                  <option key={brand._id} value={brand._id}>
+                    {brand.name}
+                  </option>
+                ))}
+              </select>
+              <button type="button" onClick={onAddBrand} className="mt-2 text-sm text-blue-600 hover:text-blue-700">
+                + Add new brand
+              </button>
+            </FieldWithTooltip>
           </div>
         </div>
 
