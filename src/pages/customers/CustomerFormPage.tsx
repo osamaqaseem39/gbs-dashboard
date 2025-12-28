@@ -54,6 +54,7 @@ const CustomerFormPage: React.FC = () => {
         // Set user data
         setUserData({
           email: res.data.email || '',
+          password: '',
           firstName: res.data.firstName || '',
           lastName: res.data.lastName || '',
           phone: res.data.phone || '',
