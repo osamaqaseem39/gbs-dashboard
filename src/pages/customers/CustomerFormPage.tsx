@@ -51,24 +51,25 @@ const CustomerFormPage: React.FC = () => {
       // Load customer data (which includes user data)
       const res = await customerService.getCustomer(id!);
       if (res.success && res.data) {
+        const customerData = res.data as any; // API returns customer with user fields
         // Set user data
         setUserData({
-          email: res.data.email || '',
+          email: customerData.email || '',
           password: '',
-          firstName: res.data.firstName || '',
-          lastName: res.data.lastName || '',
-          phone: res.data.phone || '',
-          dateOfBirth: res.data.dateOfBirth || '',
+          firstName: customerData.firstName || '',
+          lastName: customerData.lastName || '',
+          phone: customerData.phone || '',
+          dateOfBirth: customerData.dateOfBirth || '',
           userType: 'customer',
-          isActive: res.data.isActive !== false,
-          emailVerified: res.data.emailVerified || false,
+          isActive: customerData.isActive !== false,
+          emailVerified: customerData.emailVerified || false,
         });
 
         // Set customer-specific data
         setCustomerData({
-          loyaltyPoints: res.data.loyaltyPoints || 0,
-          preferredCurrency: res.data.preferredCurrency || 'PKR',
-          preferredLanguage: res.data.preferredLanguage || 'en',
+          loyaltyPoints: customerData.loyaltyPoints || 0,
+          preferredCurrency: customerData.preferredCurrency || 'PKR',
+          preferredLanguage: customerData.preferredLanguage || 'en',
         });
 
         // Load addresses
